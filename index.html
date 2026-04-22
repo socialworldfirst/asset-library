@@ -10,841 +10,923 @@
 <style>
   :root{
     --pink:#E6185F;
-    --pink-soft:#FFE4EE;
     --ink:#0B0D12;
-    --ink-2:#151821;
-    --ink-3:#1E2230;
-    --ink-4:#2A2F3F;
+    --ink-2:#12151C;
+    --ink-3:#1A1E28;
+    --ink-4:#242936;
     --line:#2A2F3F;
-    --mute:#8A90A2;
+    --line-2:#3A4053;
+    --mute:#7A8099;
     --text:#E7EAF2;
-    --text-dim:#B3B8C8;
-    --good:#34D399;
-    --warn:#FBBF24;
-    --bad:#F87171;
-    --blue:#60A5FA;
+    --text-dim:#AEB4C7;
+    --good:#22C55E;
+    --warn:#F59E0B;
+    --bad:#EF4444;
+    --blue:#3B82F6;
+    --purple:#A855F7;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,sans-serif}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   body{min-height:100vh;display:flex;flex-direction:column}
-  a{color:inherit}
-  button{font-family:inherit;cursor:pointer}
+  a{color:inherit;text-decoration:none}
+  button,select,input{font-family:inherit}
+  button{cursor:pointer}
 
-  /* HEADER */
+  /* ================ HEADER ================ */
   header{
     border-bottom:1px solid var(--line);
-    padding:20px 32px;
-    background:linear-gradient(180deg,#0F121A 0%,var(--ink) 100%);
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
+    background:var(--ink);
+    position:sticky;top:0;z-index:100;
   }
-  .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:24px}
-  .brand{display:flex;align-items:center;gap:14px}
+  .hdr-inner{padding:18px 28px;max-width:1600px;margin:0 auto}
+  .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:12px}
   .brand-mark{
-    width:36px;height:36px;border-radius:8px;
-    background:linear-gradient(135deg,var(--pink) 0%,#FF6B9A 100%);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:800;color:white;font-size:16px;letter-spacing:-0.5px;
+    width:32px;height:32px;border-radius:7px;
+    background:var(--pink);display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:white;font-size:13px;letter-spacing:-0.5px;
   }
-  .brand-text{line-height:1.1}
-  .brand-text .t1{font-weight:700;font-size:15px;color:var(--text)}
-  .brand-text .t2{font-size:11px;color:var(--mute);letter-spacing:0.6px;text-transform:uppercase;margin-top:2px}
-  h1{
-    font-family:Fraunces,Georgia,serif;font-weight:600;font-size:36px;
-    letter-spacing:-1.2px;margin:18px 0 6px;color:var(--text);
-  }
-  h1 em{color:var(--pink);font-style:italic}
-  .subtitle{color:var(--text-dim);max-width:760px;font-size:15px;line-height:1.55}
-  .hdr-stats{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
-  .stat{
-    background:var(--ink-2);border:1px solid var(--line);
-    padding:10px 16px;border-radius:10px;display:flex;gap:10px;align-items:baseline;
-  }
-  .stat .n{font-weight:700;font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
-  .stat .l{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:0.7px}
-  .stat.gap .n{color:var(--bad)}
-  .stat.live .n{color:var(--good)}
+  .brand-text .t1{font-weight:700;font-size:14px}
+  .brand-text .t2{font-size:10.5px;color:var(--mute);letter-spacing:0.6px;text-transform:uppercase;margin-top:1px}
+  .hdr-meta{display:flex;gap:16px;align-items:center;color:var(--mute);font-size:11.5px}
+  .hdr-meta .pill{background:var(--ink-2);padding:4px 9px;border-radius:20px;font-family:JetBrains Mono,monospace;font-size:10.5px}
 
-  /* SEARCH BAR */
-  .searchbar{
-    display:flex;gap:10px;margin-top:20px;align-items:center;
-    background:var(--ink-2);border:1px solid var(--line);border-radius:12px;
-    padding:8px 14px;
+  /* Region bar */
+  .region-bar{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:thin}
+  .region-bar::-webkit-scrollbar{height:4px}
+  .region-bar::-webkit-scrollbar-thumb{background:var(--line)}
+  .region-pill{
+    padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;
+    background:var(--ink-2);border:1px solid var(--line);color:var(--text-dim);
+    white-space:nowrap;transition:all .12s;display:flex;align-items:center;gap:8px;
+    flex-shrink:0;
   }
-  .searchbar input{
-    flex:1;background:transparent;border:0;outline:0;color:var(--text);
-    font-size:15px;font-family:inherit;padding:8px 4px;
+  .region-pill:hover{color:var(--text);border-color:var(--line-2)}
+  .region-pill.active{background:var(--pink);border-color:var(--pink);color:white}
+  .region-pill .rc{
+    font-family:JetBrains Mono,monospace;font-size:10.5px;
+    background:rgba(255,255,255,0.12);padding:1px 6px;border-radius:4px;
+    color:inherit;
   }
-  .searchbar input::placeholder{color:var(--mute)}
-  .searchbar kbd{
-    font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);
-    border:1px solid var(--line);padding:2px 6px;border-radius:4px;background:var(--ink-3);
-  }
-  .sortbox{
-    display:flex;gap:6px;align-items:center;padding-left:10px;border-left:1px solid var(--line);
-  }
-  .sortbox label{color:var(--mute);font-size:12px}
-  .sortbox select{
-    background:transparent;color:var(--text);border:0;outline:0;font-family:inherit;
-    font-size:13px;padding:4px;cursor:pointer;
-  }
-  .sortbox select option{background:var(--ink-2)}
+  .region-pill.active .rc{background:rgba(0,0,0,0.2)}
+  .region-pill .gap-dot{width:6px;height:6px;background:var(--bad);border-radius:50%}
 
-  /* MAIN GRID */
-  main{display:grid;grid-template-columns:280px 1fr;gap:0;flex:1;min-height:0}
+  /* Campaign bar */
+  .campaign-bar{
+    display:flex;gap:6px;overflow-x:auto;padding:10px 0 0;
+    border-top:1px solid var(--line);margin-top:2px;
+  }
+  .campaign-bar::-webkit-scrollbar{height:3px}
+  .campaign-pill{
+    padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;
+    background:transparent;border:1px solid var(--line);color:var(--text-dim);
+    white-space:nowrap;flex-shrink:0;
+  }
+  .campaign-pill:hover{color:var(--text)}
+  .campaign-pill.active{background:var(--ink-3);border-color:var(--pink);color:var(--pink)}
+  .campaign-pill .cc{font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-left:4px}
 
-  /* SIDEBAR FILTERS */
+  /* ================ LAYOUT ================ */
+  main{display:grid;grid-template-columns:240px 1fr;gap:0;max-width:1600px;margin:0 auto;width:100%;flex:1}
+
+  /* Sidebar */
   aside{
     border-right:1px solid var(--line);
-    padding:24px 20px;overflow-y:auto;
-    background:var(--ink);
-    position:sticky;top:234px;
-    height:calc(100vh - 234px);
+    padding:20px 18px;
+    position:sticky;top:212px;
+    height:calc(100vh - 212px);
+    overflow-y:auto;
   }
-  .facet{margin-bottom:22px}
+  .facet{margin-bottom:20px}
   .facet h3{
-    font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--mute);
-    margin:0 0 10px;font-weight:700;
+    font-size:10.5px;text-transform:uppercase;letter-spacing:0.8px;color:var(--mute);
+    margin:0 0 8px;font-weight:700;
   }
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .facet .chips{display:flex;flex-direction:column;gap:3px}
   .chip{
-    background:var(--ink-2);border:1px solid var(--line);
-    color:var(--text-dim);padding:5px 10px;border-radius:20px;font-size:12px;
-    cursor:pointer;transition:all .15s;user-select:none;
-    display:flex;align-items:center;gap:5px;
-  }
-  .chip:hover{border-color:var(--mute);color:var(--text)}
-  .chip.active{background:var(--pink);border-color:var(--pink);color:white;font-weight:600}
-  .chip .count{
-    font-size:10px;opacity:0.7;font-variant-numeric:tabular-nums;
-    font-family:JetBrains Mono,monospace;
-  }
-  .facet-actions{display:flex;gap:6px;margin-bottom:10px}
-  .facet-actions button{
-    background:transparent;border:1px solid var(--line);color:var(--mute);
-    padding:4px 8px;border-radius:6px;font-size:11px;
-  }
-  .facet-actions button:hover{color:var(--text);border-color:var(--mute)}
-
-  .toggle-row{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:8px 10px;background:var(--ink-2);border:1px solid var(--line);
-    border-radius:8px;margin-bottom:10px;font-size:13px;
-  }
-  .toggle-row.active{background:rgba(230,24,95,0.08);border-color:var(--pink)}
-  .switch{
-    width:36px;height:20px;background:var(--ink-4);border-radius:10px;
-    position:relative;transition:background .15s;cursor:pointer;
-  }
-  .switch::after{
-    content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;
-    background:var(--text);border-radius:50%;transition:left .15s;
-  }
-  .switch.on{background:var(--pink)}
-  .switch.on::after{left:18px;background:white}
-
-  /* CARD GRID */
-  .grid-wrap{padding:24px 28px;overflow-y:auto}
-  .results-bar{
+    background:transparent;border:1px solid transparent;color:var(--text-dim);
+    padding:6px 9px;border-radius:6px;font-size:12.5px;text-align:left;
     display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:18px;font-size:13px;color:var(--text-dim);
   }
-  .clear-all{
-    background:transparent;border:1px solid var(--line);color:var(--mute);
-    padding:4px 10px;border-radius:6px;font-size:12px;
+  .chip:hover{background:var(--ink-2);color:var(--text)}
+  .chip.active{background:var(--ink-3);border-color:var(--line-2);color:var(--text);font-weight:600}
+  .chip .c{font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute)}
+  .chip.active .c{color:var(--pink)}
+
+  /* Lifecycle dots */
+  .lc-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+  .lc-gap{background:var(--bad)}
+  .lc-edit{background:var(--warn)}
+  .lc-ready{background:var(--blue)}
+  .lc-live{background:var(--good)}
+  .lc-winding{background:#F97316}
+  .lc-archived{background:var(--mute)}
+
+  /* ================ GRID ================ */
+  .grid-wrap{padding:22px 28px;overflow-y:auto}
+  .breadcrumb{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+    font-size:13px;color:var(--mute);
   }
-  .clear-all:hover{color:var(--pink);border-color:var(--pink)}
+  .breadcrumb strong{color:var(--text);font-weight:600}
+  .breadcrumb .sep{color:var(--line-2)}
+  .bc-count{margin-left:auto;color:var(--mute);font-size:12px;font-family:JetBrains Mono,monospace}
+
+  .toolbar{
+    display:flex;gap:8px;margin-bottom:18px;align-items:center;
+  }
+  .search{
+    flex:1;background:var(--ink-2);border:1px solid var(--line);border-radius:8px;
+    padding:0 12px;display:flex;align-items:center;gap:8px;
+  }
+  .search svg{color:var(--mute);flex-shrink:0}
+  .search input{
+    flex:1;background:transparent;border:0;outline:0;color:var(--text);
+    font-size:13.5px;padding:9px 0;
+  }
+  .search input::placeholder{color:var(--mute)}
+  .sort{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:8px;
+    padding:0 10px 0 14px;color:var(--text);font-size:13px;height:38px;outline:0;
+  }
+  .sort:focus{border-color:var(--line-2)}
+  .sort option{background:var(--ink-2)}
+  .clear{background:transparent;border:1px solid var(--line);color:var(--mute);padding:0 12px;border-radius:8px;height:38px;font-size:12px}
+  .clear:hover{border-color:var(--line-2);color:var(--text)}
+
   .cards{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
     gap:16px;
   }
+
+  /* ================ CARD ================ */
   .card{
-    background:var(--ink-2);border:1px solid var(--line);border-radius:14px;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:10px;
     overflow:hidden;display:flex;flex-direction:column;
-    transition:border-color .15s,transform .15s;
+    transition:border-color .12s;
   }
-  .card:hover{border-color:var(--ink-4);transform:translateY(-2px)}
-  .card.gap{
-    border:1.5px dashed rgba(248,113,113,0.5);background:rgba(248,113,113,0.04);
-  }
-  .card.gap:hover{border-color:var(--bad)}
+  .card:hover{border-color:var(--line-2)}
+  .card.gap{border:1.5px dashed rgba(239,68,68,0.4);background:rgba(239,68,68,0.03)}
+
+  /* Vertical 9:16 thumbnail */
   .thumb{
-    aspect-ratio:16/10;
-    background:linear-gradient(135deg,#1F2433 0%,#151821 100%);
-    position:relative;overflow:hidden;
+    aspect-ratio:9/16;background:var(--ink-3);position:relative;
+    overflow:hidden;display:flex;align-items:center;justify-content:center;
+  }
+  .thumb-poster{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:14px;
+    background:linear-gradient(180deg,rgba(11,13,18,0) 40%,rgba(11,13,18,0.85) 85%,rgba(11,13,18,0.95) 100%);
+  }
+  .thumb-bg{
+    position:absolute;inset:0;z-index:-1;
     display:flex;align-items:center;justify-content:center;
+    font-size:80px;opacity:0.35;filter:grayscale(0.3);
   }
-  .thumb.hero-worldcard{background:linear-gradient(135deg,#2A1829 0%,#3D0E24 100%)}
-  .thumb.hero-1688{background:linear-gradient(135deg,#1A2336 0%,#0D2E4E 100%)}
-  .thumb.hero-fx{background:linear-gradient(135deg,#1F2B1F 0%,#0E3A1E 100%)}
-  .thumb.hero-supplier{background:linear-gradient(135deg,#2E2318 0%,#3E2A0E 100%)}
-  .thumb.hero-brand{background:linear-gradient(135deg,#261F36 0%,#4A1C70 100%)}
-  .thumb.hero-case{background:linear-gradient(135deg,#1B2C36 0%,#0E4760 100%)}
-  .thumb.hero-gap{background:linear-gradient(135deg,#2A1A1A 0%,#3E1414 100%)}
-  .thumb-icon{
-    font-size:42px;opacity:0.65;color:var(--text);
-    filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  .thumb-title{
+    font-weight:700;font-size:14px;line-height:1.25;color:white;
+    letter-spacing:-0.3px;text-shadow:0 1px 2px rgba(0,0,0,0.5);
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden;
   }
-  .thumb-badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
-  .thumb-badge{
-    background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);color:white;
-    padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;
-    letter-spacing:0.4px;text-transform:uppercase;
+  .thumb-sub{
+    font-size:11px;color:rgba(255,255,255,0.75);margin-top:6px;
+    font-weight:500;
   }
-  .thumb-badge.live{background:rgba(52,211,153,0.85);color:#0A2E1F}
-  .thumb-badge.gap{background:rgba(248,113,113,0.85);color:#2E0A0A}
-  .thumb-dur{
+  .thumb.real-bg{background-size:cover;background-position:center}
+
+  .thumb-badges{
+    position:absolute;top:10px;left:10px;right:10px;
+    display:flex;gap:6px;flex-wrap:wrap;justify-content:space-between;
+  }
+  .badge{
+    background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);
+    color:white;padding:3px 8px;border-radius:5px;
+    font-size:10px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;
+    display:flex;align-items:center;gap:4px;
+  }
+  .badge.live{background:var(--good);color:#0A1F0F}
+  .badge.edit{background:var(--warn);color:#1F1407}
+  .badge.ready{background:var(--blue);color:#0A1F2E}
+  .badge.gap{background:var(--bad);color:#1F0707}
+  .badge.winding{background:#F97316;color:#1F0E07}
+  .badge.archived{background:var(--mute);color:white}
+  .badge-dur{
     position:absolute;bottom:10px;right:10px;
-    background:rgba(0,0,0,0.7);color:white;padding:3px 8px;border-radius:6px;
-    font-size:11px;font-family:JetBrains Mono,monospace;font-weight:600;
+    background:rgba(0,0,0,0.72);color:white;padding:3px 7px;border-radius:4px;
+    font-size:10.5px;font-family:JetBrains Mono,monospace;font-weight:600;
   }
 
-  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
-  .card-title{
-    font-weight:600;font-size:14px;line-height:1.35;color:var(--text);
-    letter-spacing:-0.2px;
+  /* Card body */
+  .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .title{
+    font-weight:600;font-size:13px;line-height:1.3;color:var(--text);
+    letter-spacing:-0.1px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   }
-  .card.gap .card-title{color:var(--text-dim);font-style:italic}
-  .card-meta{
-    display:flex;gap:6px;font-size:11px;color:var(--mute);
-    align-items:center;flex-wrap:wrap;
+  .meta-row{font-size:11px;color:var(--mute);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .meta-row .tag{
+    padding:2px 6px;border-radius:3px;font-weight:500;font-size:10px;
+    text-transform:uppercase;letter-spacing:0.4px;
   }
-  .card-meta .pillar{
-    background:var(--ink-3);color:var(--text-dim);
-    padding:2px 7px;border-radius:4px;font-weight:600;
-  }
-  .card-meta .dot{opacity:0.4}
+  .tag.kol{background:rgba(168,85,247,0.15);color:#C084FC}
+  .tag.team{background:rgba(59,130,246,0.15);color:#60A5FA}
+  .tag.freelancer{background:rgba(245,158,11,0.15);color:#FCD34D}
+  .tag.partner{background:rgba(34,197,94,0.15);color:#4ADE80}
+  .tag.buyer{background:rgba(236,72,153,0.15);color:#F472B6}
+  .tag.brand{background:rgba(156,163,175,0.15);color:#D1D5DB}
 
-  .card-tags{display:flex;flex-wrap:wrap;gap:4px}
-  .tag{
-    font-size:10.5px;padding:2px 7px;border-radius:4px;
-    background:var(--ink-3);color:var(--text-dim);font-weight:500;
-    border:1px solid transparent;
+  .creator{font-weight:500;color:var(--text-dim);font-size:11.5px}
+  .campaign-ref{
+    font-size:10.5px;color:var(--pink);font-weight:600;
+    letter-spacing:0.3px;text-transform:uppercase;margin-top:2px;
   }
-  .tag.lang{background:rgba(96,165,250,0.12);color:var(--blue);border-color:rgba(96,165,250,0.2)}
-  .tag.region{background:rgba(230,24,95,0.12);color:#FF6B9A;border-color:rgba(230,24,95,0.2)}
-  .tag.product{background:rgba(52,211,153,0.10);color:var(--good);border-color:rgba(52,211,153,0.2)}
-  .tag.voice{background:rgba(251,191,36,0.10);color:var(--warn);border-color:rgba(251,191,36,0.2)}
 
-  .cuts-row{
-    display:flex;gap:6px;font-family:JetBrains Mono,monospace;font-size:10px;
-    padding:6px 8px;background:var(--ink);border-radius:6px;border:1px solid var(--line);
-  }
-  .cut{color:var(--mute);display:flex;align-items:center;gap:3px}
-  .cut.has{color:var(--good)}
-  .cut.missing{color:var(--bad);text-decoration:line-through;opacity:0.6}
-
-  .perf-pill{
-    display:inline-flex;gap:8px;align-items:center;padding:4px 9px;border-radius:6px;
-    background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);
-    font-size:10.5px;color:var(--blue);font-family:JetBrains Mono,monospace;
-    align-self:flex-start;
-  }
-  .perf-pill.hot{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.25);color:var(--good)}
-  .perf-pill.cold{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.25);color:var(--warn)}
-
-  .actions{
-    display:flex;gap:6px;margin-top:auto;padding-top:8px;
+  /* Published channels row */
+  .channels{
+    display:flex;gap:4px;margin-top:4px;padding-top:8px;
     border-top:1px solid var(--line);
   }
-  .btn{
-    flex:1;padding:8px 10px;border-radius:7px;font-size:12px;font-weight:600;
-    text-align:center;text-decoration:none;border:1px solid transparent;
-    transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;
+  .ch-link{
+    width:24px;height:24px;border-radius:5px;background:var(--ink-3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;color:var(--text-dim);
+    transition:all .12s;
   }
-  .btn.primary{background:var(--pink);color:white}
-  .btn.primary:hover{background:#D01655}
-  .btn.ghost{background:transparent;border-color:var(--line);color:var(--text-dim)}
-  .btn.ghost:hover{border-color:var(--mute);color:var(--text)}
-  .btn.warn{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.3);color:var(--bad)}
-  .btn.warn:hover{background:rgba(248,113,113,0.15)}
+  .ch-link:hover{background:var(--line-2);color:var(--text)}
+  .ch-link.has{background:var(--ink-4);color:var(--text)}
+  .ch-link.has:hover{background:var(--pink);color:white}
 
-  /* MOBILE */
-  @media (max-width:900px){
-    main{grid-template-columns:1fr}
-    aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
-    h1{font-size:28px}
-    header{padding:18px 20px}
-    .grid-wrap{padding:20px}
+  /* Performance */
+  .perf{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    background:var(--ink);border-radius:6px;overflow:hidden;margin-top:2px;
   }
+  .perf-cell{
+    padding:7px 8px;background:var(--ink-3);display:flex;flex-direction:column;gap:1px;
+  }
+  .perf-val{font-weight:700;font-size:12px;color:var(--text);font-variant-numeric:tabular-nums}
+  .perf-lbl{font-size:9px;color:var(--mute);text-transform:uppercase;letter-spacing:0.4px}
+  .perf-placeholder{
+    padding:8px 10px;background:var(--ink-3);border-radius:6px;
+    font-size:10.5px;color:var(--mute);font-style:italic;
+    display:flex;align-items:center;gap:6px;
+  }
+  .perf-placeholder::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mute);opacity:0.5}
+
+  /* Lifecycle bar */
+  .lifecycle{
+    display:flex;gap:2px;margin-top:4px;
+  }
+  .lc-seg{
+    flex:1;height:3px;background:var(--ink-4);border-radius:1px;
+  }
+  .lc-seg.on.gap{background:var(--bad)}
+  .lc-seg.on.edit{background:var(--warn)}
+  .lc-seg.on.ready{background:var(--blue)}
+  .lc-seg.on.live{background:var(--good)}
+  .lc-seg.on.winding{background:#F97316}
+
+  /* Source links row */
+  .source-row{
+    display:flex;gap:6px;font-size:10.5px;color:var(--mute);
+    margin-top:auto;padding-top:8px;border-top:1px solid var(--line);
+  }
+  .source-link{
+    color:var(--text-dim);text-decoration:none;border-bottom:1px dotted var(--line-2);
+    padding-bottom:1px;
+  }
+  .source-link:hover{color:var(--pink);border-color:var(--pink)}
+  .source-missing{color:var(--mute);opacity:0.55}
+
+  /* Empty state */
+  .empty{
+    grid-column:1/-1;padding:60px 30px;text-align:center;color:var(--mute);
+    border:1.5px dashed var(--line);border-radius:12px;
+  }
+  .empty h2{font-family:Fraunces,serif;font-weight:400;color:var(--text);margin-bottom:6px}
+  .empty p{max-width:460px;margin:6px auto 0;font-size:13px;line-height:1.6}
 
   /* Footer */
   footer{
-    padding:20px 32px;border-top:1px solid var(--line);color:var(--mute);
-    font-size:11px;background:var(--ink);
+    padding:18px 28px;border-top:1px solid var(--line);color:var(--mute);
+    font-size:11px;background:var(--ink);text-align:center;
   }
-  footer a{color:var(--text-dim);text-decoration:none;border-bottom:1px dotted var(--line)}
-  footer a:hover{color:var(--pink)}
+  footer a{color:var(--text-dim);border-bottom:1px dotted var(--line)}
 
-  /* Empty state */
-  .empty-state{
-    grid-column:1/-1;padding:60px 30px;text-align:center;color:var(--mute);
-    border:1.5px dashed var(--line);border-radius:14px;
+  @media (max-width:900px){
+    main{grid-template-columns:1fr}
+    aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
   }
-  .empty-state h2{font-family:Fraunces,serif;font-weight:400;color:var(--text);margin-bottom:8px}
-  .empty-state p{max-width:480px;margin:0 auto;line-height:1.6}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="hdr-top">
-    <div class="brand">
-      <div class="brand-mark">WF</div>
-      <div class="brand-text">
-        <div class="t1">WorldFirst · Asset Library</div>
-        <div class="t2">Content Ops · Production Coordinator</div>
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div class="brand">
+        <div class="brand-mark">WF</div>
+        <div class="brand-text">
+          <div class="t1">WorldFirst Asset Library</div>
+          <div class="t2">upper-funnel → paid · content ops</div>
+        </div>
+      </div>
+      <div class="hdr-meta">
+        <span class="pill" id="hdrCount">— assets</span>
+        <span class="pill" id="hdrGap">— gaps</span>
+        <span class="pill" id="hdrLive">— live</span>
       </div>
     </div>
-    <div style="font-size:11px;color:var(--mute);font-family:JetBrains Mono,monospace">
-      v0.1 concept · 2026-04-22
-    </div>
-  </div>
-  <h1>Every WF social asset, <em>filterable by region, language, product.</em></h1>
-  <div class="subtitle">
-    Bridge between upper-funnel social content and paid-team creative targeting.
-    Each card links to source files on Drive, shows which cuts exist (60s/30s/15s/6s), and flags gaps so you know what still needs to be produced or localised.
-  </div>
-  <div class="hdr-stats" id="statsBar"></div>
-  <div class="searchbar">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--mute)">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    <input id="searchInput" placeholder='Search — try "worldcard" · "1688" · "UK" · "supplier case"' />
-    <kbd>/</kbd>
-    <div class="sortbox">
-      <label>Sort</label>
-      <select id="sortSelect">
-        <option value="relevance">Relevance</option>
-        <option value="newest">Newest</option>
-        <option value="region">Region A-Z</option>
-        <option value="status">Status</option>
-        <option value="gap-first">Gaps first</option>
-      </select>
-    </div>
+
+    <div class="region-bar" id="regionBar"></div>
+    <div class="campaign-bar" id="campaignBar"></div>
   </div>
 </header>
 
 <main>
   <aside id="filters"></aside>
   <section class="grid-wrap">
-    <div class="results-bar">
-      <div id="resultsCount">— of — assets</div>
-      <button class="clear-all" id="clearAll">Clear all filters</button>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="toolbar">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="searchInput" placeholder="Search assets — title, creator, product…" />
+      </div>
+      <select class="sort" id="sortSelect">
+        <option value="lifecycle">Sort · Lifecycle stage</option>
+        <option value="newest">Sort · Newest first</option>
+        <option value="performance">Sort · Performance</option>
+        <option value="gap-first">Sort · Gaps first</option>
+      </select>
+      <button class="clear" id="clearAll">Reset</button>
     </div>
     <div class="cards" id="cardsGrid"></div>
   </section>
 </main>
 
 <footer>
-  Asset Library concept · WorldFirst Content Ops ·
-  Source of truth: <a href="#">gdrive:Content Strategy/Content Ops/Asset_Library.xlsx</a> ·
-  Feedback: <a href="#">@Steven Chen</a> on #senpai-claw
+  Asset Library v0.2 · WorldFirst Content Ops ·
+  Source: <a>gdrive:Content Strategy/Content Ops/Asset_Library.xlsx</a> ·
+  Performance ingestion from Sprout Social + YouTube Studio — Phase 2
 </footer>
 
 <script>
-/* =========================================================================
-   ASSET DATA — seeded from verified production state as of 2026-04-22
-   One row = one distributable asset or cut.
-   Parent/child linkage via parentId for cuts.
-   ========================================================================= */
+/* ============================================================
+   DATA — seeded from Canton Fair 2026 production + paid-april
+   Fields per asset:
+     id, title, pillar, campaign, talentCategory, creator,
+     region[], regionFit[], language, voice,
+     format, duration (seconds),
+     lifecycle: 'gap' | 'scripted' | 'edit' | 'ready' | 'live' | 'winding-down' | 'archived',
+     publishedURLs: { yt, tiktok, ig, fb, linkedin, x } (null if not live per channel),
+     perf: { views, erPct, watchTime, updated } or null,
+     finishedFile, originalFile,
+     notes, thumbnail (emoji placeholder for now)
+   ============================================================ */
 const ASSETS = [
-  // ============ WORLDCARD CLUSTER ============
-  {id:"CTF-T1-08", title:"Meet The World Card — Live at Canton Fair", hook:"brand",
-   pillar:"Canton Fair", product:["Worldcard"], region:["UK"], regionFit:["UK","Global"],
-   language:["EN-UK"], voice:"Lawrence / UK accent", creator:"Lawrence (UK team)", talentType:"WF team",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:58, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","FB-Reels","LinkedIn"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier1_cuts.docx",
-   thumb:"worldcard", thumbIcon:"💳",
-   notes:"Lawrence UK holding newly-released World Card with mic clipped to it. Factual/brand angle."},
+  // ============ CANTON FAIR 2026 — T1 WORLDCARD ============
+  {id:"CTF-T1-08", title:"Meet The World Card — Live At Canton Fair",
+   pillar:"Canton Fair", campaign:"Worldcard Launch", talentCategory:"WF Team",
+   creator:"Lawrence Bennett (UK)", region:["UK"], regionFit:["UK","Global"],
+   language:"EN-UK", voice:"UK accent",
+   format:"Short-form video", duration:58,
+   lifecycle:"edit",
+   publishedURLs:{yt:null,tiktok:null,ig:null,fb:null,linkedin:null,x:null},
+   perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier1_cuts.docx",
+   notes:"Lawrence holding newly-released World Card with mic clipped to it. Factual / brand angle.",
+   thumb:"💳", thumbBg:"#3D0E24"},
 
-  {id:"LEX-L9", title:"World Card: Virtual Cards + Freeze Employee Spending", hook:"brand",
-   pillar:"KOL", product:["Worldcard"], region:["VN"], regionFit:["VN","UK","SEA-MY","SEA-SG","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo (@lexdiamo)", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:62, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"worldcard", thumbIcon:"🔐",
-   notes:"Lex walks through virtual card setup, freezing employee spending. Use case angle."},
+  {id:"LEX-L9", title:"World Card · Virtual Cards + Freeze Employee Spending",
+   pillar:"KOL", campaign:"Worldcard Launch", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN"], regionFit:["VN","UK","SEA-MY","SEA-SG"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:62,
+   lifecycle:"edit",
+   publishedURLs:{yt:null,tiktok:null,ig:null,fb:null,linkedin:null,x:null},
+   perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"Virtual card setup + employee spending freeze. Use-case angle.",
+   thumb:"🔐", thumbBg:"#2A1829"},
 
-  {id:"LEX-L10", title:"1.2% Cashback On Every Business Transaction", hook:"case",
-   pillar:"KOL", product:["Worldcard"], region:["VN","UK"], regionFit:["VN","UK","SEA-MY","SEA-SG","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo (@lexdiamo)", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:58, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"worldcard", thumbIcon:"💰",
-   notes:"Cashback 1.2% · reinvest into business. Can double for UK with accent caveat."},
+  {id:"LEX-L10", title:"1.2% Cashback On Every Business Transaction",
+   pillar:"KOL", campaign:"Worldcard Launch", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN","UK"], regionFit:["VN","UK","SEA-MY"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:58,
+   lifecycle:"edit",
+   publishedURLs:{yt:null,tiktok:null,ig:null,fb:null,linkedin:null,x:null},
+   perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"Cashback 1.2% · reinvest into business. Can double for UK.",
+   thumb:"💰", thumbBg:"#2A1829"},
 
-  // GAPS - Worldcard
-  {id:"GAP-ANZ-WC", title:"ANZ Worldcard 1% Cashback — needs production", hook:"brand",
-   pillar:"Canton Fair", product:["Worldcard"], region:["ANZ"], regionFit:["ANZ"],
-   language:["EN-AU"], voice:"AU accent needed", creator:"TBD (Jim Vrondas candidate)", talentType:"WF team",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"1% cashback (different from UK/VN 1.2%) — distinct creative required. $10K paid budget explicitly calls this out. Zero content exists."},
+  // GAPS — WORLDCARD
+  {id:"GAP-ANZ-WC", title:"ANZ · World Card 1% Cashback (different from UK/VN 1.2%)",
+   pillar:"Canton Fair", campaign:"Worldcard Launch", talentCategory:"WF Team",
+   creator:"TBD · Jim Vrondas candidate", region:["ANZ"], regionFit:["ANZ"],
+   language:"EN-AU", voice:"AU accent",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"Paid-April $10K ANZ explicitly calls out 1% cashback. Zero content. Distinct creative required.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"GAP-UK-WC2", title:"UK Worldcard — second creative (cashback-forward)", hook:"brand",
-   pillar:"Canton Fair", product:["Worldcard"], region:["UK"], regionFit:["UK"],
-   language:["EN-UK"], voice:"UK accent", creator:"TBD", talentType:"WF team",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"$197K UK budget — 1 Worldcard piece (T1-08) is light. Cashback-forward benefit angle still missing."},
+  // ============ CANTON FAIR 2026 — 1688 / SUPPLIER PAYMENT ============
+  {id:"LEX-L1", title:"1688 Explainer · What It Is And Why It Matters",
+   pillar:"KOL", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:65,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"Foundational 1688 piece. VN-anchored but serves SEA broadly.",
+   thumb:"🏭", thumbBg:"#0D2E4E"},
 
-  // ============ 1688 / SUPPLIER PAYMENT CLUSTER ============
-  {id:"LEX-L1", title:"1688 Explainer — What It Is and Why It Matters", hook:"supplier",
-   pillar:"KOL", product:["1688 World Pay"], region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:65, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"1688", thumbIcon:"🏭",
-   notes:"Foundational 1688 piece. VN-anchored but serves SEA broadly."},
+  {id:"LEX-L2", title:"WF × 1688 · Pay Suppliers In CNY Directly",
+   pillar:"KOL", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:58,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"Partnership angle. Lead creative for SEA $75K budget line.",
+   thumb:"🤝", thumbBg:"#0D2E4E"},
 
-  {id:"LEX-L2", title:"WF × 1688 Partnership — Pay Suppliers in CNY Directly", hook:"supplier",
-   pillar:"KOL", product:["1688 World Pay"], region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:58, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"1688", thumbIcon:"🤝",
-   notes:"Partnership angle. Lead creative for SEA $75K budget line."},
+  {id:"LEX-L7", title:"Role-Play · 150k Chinese Suppliers On Your Shortlist",
+   pillar:"KOL", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN","SEA-MY"], regionFit:["VN","SEA-MY","SEA-SG"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:72,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"Role-play format, scale message.",
+   thumb:"👥", thumbBg:"#0D2E4E"},
 
-  {id:"LEX-L7", title:"Role-Play: 150k Chinese Suppliers On Your Shortlist", hook:"supplier",
-   pillar:"KOL", product:["1688 World Pay","Multi-currency Account"], region:["VN","SEA-MY"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:72, status:"edit", platforms:["TikTok","IG-Reels"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"1688", thumbIcon:"👥",
-   notes:"Role-play format, scale message. Strong for SEA reach."},
+  {id:"ALICE-1688", title:"Pay 1688 In CNY · No Currency Conversion Needed",
+   pillar:"Canton Fair", campaign:"1688 Pay Suppliers", talentCategory:"Partner",
+   creator:"Alice · WF 1688 partnership", region:["Global"], regionFit:["SEA-MY","SEA-SG","UK","Global"],
+   language:"EN-SEA", voice:"SEA accent",
+   format:"Short-form video", duration:48,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   notes:"Strong bank-vs-WF root-message piece.",
+   thumb:"💱", thumbBg:"#0D2E4E"},
 
-  {id:"ALICE-1688", title:"Pay 1688 in CNY — No Currency Conversion Needed", hook:"supplier",
-   pillar:"Canton Fair", product:["1688 World Pay"], region:["Global"], regionFit:["SEA-MY","SEA-SG","UK","VN","Global"],
-   language:["EN-SEA"], voice:"Alice / SEA accent", creator:"Alice (WF 1688 partnership)", talentType:"partner",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:48, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts","LinkedIn"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
-   thumb:"1688", thumbIcon:"💱",
-   notes:"A0006 source clip. Strong bank-vs-WF root-message piece."},
+  {id:"GAP-SEA-1688-MYR", title:"SEA · MYR→CNH 1688 creative (currency-pair hook)",
+   pillar:"Canton Fair", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"TBD · MY-local KOL", region:["SEA-MY"], regionFit:["SEA-MY"],
+   language:"EN-SEA + Malay", voice:"MY-local preferred",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"$75K SEA budget wants currency-pair hook. Can partially repurpose Lex L2.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  // GAPS - 1688
-  {id:"GAP-SEA-1688-MYR", title:"SEA 1688 — MYR→CNH hook creative", hook:"supplier",
-   pillar:"Canton Fair", product:["1688 World Pay"], region:["SEA-MY"], regionFit:["SEA-MY"],
-   language:["EN-SEA","Malay"], voice:"MY-local preferred", creator:"TBD (KOL candidate)", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"MYR specifically unrepresented. $75K SEA budget wants currency-pair hook. Can partially repurpose Lex L2 with MYR overlay."},
+  {id:"GAP-TH-ALL", title:"Thailand · Thai VO · supplier payment",
+   pillar:"Corridor", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"TBD · TH-local KOL", region:["TH"], regionFit:["TH"],
+   language:"Thai", voice:"TH-local essential",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"Thailand zero representation. EN fails in TH B2B.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"GAP-TH-ALL", title:"Thailand content — THB → CNH", hook:"supplier",
-   pillar:"Canton Fair", product:["1688 World Pay","Multi-currency Account"], region:["TH"], regionFit:["TH"],
-   language:["Thai"], voice:"TH-local essential", creator:"TBD (KOL candidate)", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"Thailand completely unrepresented. EN does not work in TH B2B. Requires Thai-language production."},
+  // ============ CANTON FAIR 2026 — FX / BANK PAIN ============
+  {id:"JON-A0036", title:"Jon Law · FX Hero · Traditional Bank Pain",
+   pillar:"Canton Fair", campaign:"FX Promo / Hidden Fees", talentCategory:"Partner",
+   creator:"Jon Law · @jonlawedu (1M+)", region:["UK"], regionFit:["UK","EEA","Global"],
+   language:"EN-UK", voice:"UK accent",
+   format:"Short-form video", duration:96,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   notes:"Expanded 1k → 2.8k. Full creator-arc preamble.",
+   thumb:"💷", thumbBg:"#0E3A1E"},
 
-  {id:"GAP-MA-1688-FR", title:"Morocco · 1688 in French VO", hook:"supplier",
-   pillar:"Corridor", product:["1688 World Pay"], region:["Longtail-Morocco"], regionFit:["Longtail-Morocco"],
-   language:["French"], voice:"FR-Morocco or standard FR", creator:"TBD (FR-speaking KOL or dub Lex L1)", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"B2B in Morocco is French-dominant. Forward-looking region. Lex L1 could be dubbed/subtitled as first pass."},
+  {id:"LEX-L5", title:"Germany Bank Fees vs WorldFirst · $500 vs $100",
+   pillar:"KOL", campaign:"FX Promo / Hidden Fees", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["EEA-DE","UK"], regionFit:["EEA-DE","UK","VN"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:54,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   notes:"$500 vs $100 hero number. Voice/accent caveat for EEA-DE.",
+   thumb:"🇩🇪", thumbBg:"#0E3A1E"},
 
-  // ============ FX / BANK PAIN CLUSTER ============
-  {id:"JON-A0036", title:"Jon Law — FX Hero · Traditional Bank Pain", hook:"fx",
-   pillar:"Canton Fair", product:["FX","Multi-currency Account"], region:["UK"], regionFit:["UK","EEA","Global"],
-   language:["EN-UK"], voice:"Jon Law / UK", creator:"Jon Law (@jonlawedu)", talentType:"partner",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:96, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","LinkedIn"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
-   thumb:"fx", thumbIcon:"💷",
-   notes:"Expanded 1k → 2.8k. Full creator-arc preamble. Candidate for UK FX paid hero + Enterprise/LinkedIn angle."},
+  {id:"JIM-AU-A0119", title:"Lock Your FX Rate · Forwards Explained",
+   pillar:"Canton Fair", campaign:"pay2cn + Worldcard (ANZ)", talentCategory:"WF Team",
+   creator:"Jim Vrondas · WF ANZ", region:["ANZ"], regionFit:["ANZ","UK","EEA"],
+   language:"EN-AU", voice:"AU accent",
+   format:"Short-form video", duration:44,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   notes:"Primary ANZ pay2cn/Forwards asset.",
+   thumb:"🔒", thumbBg:"#0E3A1E"},
 
-  {id:"LEX-L5", title:"Germany Bank Fees vs WorldFirst — $500 vs $100", hook:"case",
-   pillar:"KOL", product:["FX","Multi-currency Account"], region:["EEA-DE","UK"], regionFit:["EEA-DE","UK","VN","Global"],
-   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:54, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts","LinkedIn"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
-   thumb:"case", thumbIcon:"🇩🇪",
-   notes:"$500 vs $100 hero number. Strong comparison creative. EEA-DE fit, can repurpose for UK paid."},
+  // ============ CUSTOMER CASE / SUPPLIER PAYMENT CASES ============
+  {id:"TRENDSETTER-15", title:"Tay × WF · Top 15 Clippable Moments (Made In England)",
+   pillar:"Partnerships", campaign:"Trendsetter × WF", talentCategory:"Partner",
+   creator:"Tay · Trendsetters (UK)", region:["UK"], regionFit:["UK","Global"],
+   language:"EN-UK", voice:"UK-urban",
+   format:"Short-form video", duration:null,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Content Strategy/Trendsetter_Top15_Clips_for_WorldFirst",
+   notes:"Hero: 'approve sample in morning, supplier works afternoon'. 15 ranked clips.",
+   thumb:"🇬🇧", thumbBg:"#0E4760"},
 
-  {id:"JIM-AU-A0119", title:"Lock Your FX Rate — Forwards Explained", hook:"fx",
-   pillar:"Canton Fair", product:["Forwards","FX"], region:["ANZ"], regionFit:["ANZ","UK","EEA"],
-   language:["EN-AU"], voice:"Jim / AU accent", creator:"Jim Vrondas (WF ANZ)", talentType:"WF team",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:44, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","LinkedIn"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
-   thumb:"fx", thumbIcon:"🔒",
-   notes:"A0119. Primary ANZ pay2cn/Forwards asset. $10K ANZ budget has this."},
+  {id:"MATHIEU-P1", title:"Verso Supply · 5-video Phase 1 slate",
+   pillar:"KOL", campaign:"Canton Fair 2026 · KOL", talentCategory:"Influencer (KOL)",
+   creator:"Mathieu Bauer · @verso_supply (524K)", region:["Global","EEA-FR"], regionFit:["Global","EEA-FR","UK","VN"],
+   language:"EN-UK + French?", voice:"Mathieu",
+   format:"Short-form video", duration:null,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Content Strategy/KOL/Mathieu Bauer - Verso Supply/",
+   notes:"5-video slate, $7,500. Verify French-dubbing rights.",
+   thumb:"📦", thumbBg:"#0E4760"},
 
-  {id:"FX-FOOTAGE-BANK", title:"FX Reusable Footage Bank — 16 soundbites", hook:"fx",
-   pillar:"Canton Fair", product:["FX","Forwards","Multi-currency Account"], region:["Global"], regionFit:["UK","EEA","ANZ","VN","SEA-MY","SEA-SG","Global"],
-   language:["EN-UK","EN-SEA","EN-AU"], voice:"Mixed", creator:"Multiple", talentType:"mixed",
-   format:"Footage bank", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"ready-to-reuse", platforms:[],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/2026-04-20_canton_fair_fx_reusable_footage.xlsx",
-   thumb:"fx", thumbIcon:"🎬",
-   notes:"16 FX-relevant soundbites across all 3 days. Raw footage for editor to cut into ad-format variants."},
+  // GAPS — multilingual + local talent
+  {id:"GAP-PK-URDU", title:"Pakistan · Urdu VO · supplier payment case",
+   pillar:"Corridor", campaign:"Longtail supplier payment", talentCategory:"Influencer (KOL)",
+   creator:"TBD · PK-local KOL deal needed", region:["Longtail-PK"], regionFit:["Longtail-PK"],
+   language:"Urdu", voice:"PK-local essential",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"$100K Longtail budget blocked until PK creator exists.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  // ============ SUPPLIER PAYMENT CASES CLUSTER ============
-  {id:"TRENDSETTER-15", title:"Tay × WF — Top 15 Clippable Moments (Made in England)", hook:"case",
-   pillar:"Partnerships", product:["Multi-currency Account","1688 World Pay"], region:["UK"], regionFit:["UK","Global"],
-   language:["EN-UK"], voice:"Tay / UK-urban", creator:"Tay (Trendsetters)", talentType:"partner",
-   format:"Display/Reel", cuts:{"60s":true,"30s":true,"15s":true,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"editor-brief", platforms:["TikTok","IG-Reels","LinkedIn","Display-Ad"],
-   perf:null, driveLink:"gdrive:Content Strategy/Trendsetter_Top15_Clips_for_WorldFirst",
-   thumb:"case", thumbIcon:"🇬🇧",
-   notes:"Hero: 'approve sample in morning, supplier works afternoon.' 15 ranked clips across 4 categories. Can hit multiple paid lines (UK hero, global social proof)."},
+  {id:"GAP-BD-BENGALI", title:"Bangladesh · Bengali VO · supplier payment case",
+   pillar:"Corridor", campaign:"Longtail supplier payment", talentCategory:"Influencer (KOL)",
+   creator:"TBD · BD-local KOL deal needed", region:["Longtail-BD"], regionFit:["Longtail-BD"],
+   language:"Bengali", voice:"BD-local essential",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"BD zero representation. Needs KOL deal or staff hire.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"MATHIEU-P1", title:"Mathieu Bauer (Verso Supply) — 5-video Phase 1 slate", hook:"case",
-   pillar:"KOL", product:["Multi-currency Account","1688 World Pay"], region:["Global","EEA-FR"], regionFit:["Global","EEA-FR","UK","VN"],
-   language:["EN-UK","French"], voice:"Mathieu / multi", creator:"Mathieu Bauer (@verso_supply · 524K)", talentType:"KOL",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Content Strategy/KOL/Mathieu Bauer - Verso Supply/",
-   thumb:"case", thumbIcon:"📦",
-   notes:"5-video slate, $7,500. Verify if French-dubbing rights exist (Morocco / EEA-FR opportunity)."},
+  {id:"GAP-MA-FR-1688", title:"Morocco · French VO · 1688 / supplier pay",
+   pillar:"Corridor", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"TBD · FR-speaking KOL or dub Lex L1", region:["Longtail-Morocco"], regionFit:["Longtail-Morocco"],
+   language:"French", voice:"FR-Morocco or standard",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"B2B in Morocco is French-dominant. Lex L1 could be dubbed/subtitled.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"GAP-LONGTAIL-PK", title:"Pakistan · Urdu VO · supplier payment case", hook:"case",
-   pillar:"Corridor", product:["Multi-currency Account","1688 World Pay"], region:["Longtail-PK"], regionFit:["Longtail-PK"],
-   language:["Urdu"], voice:"PK-local essential", creator:"TBD (KOL deal needed)", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"Harley is B-roll in Canton Fair T2 — not creator piece. $100K Longtail budget blocked until PK creator exists."},
+  {id:"GAP-EEA-DE", title:"Germany · German VO · supplier payment case",
+   pillar:"Canton Fair", campaign:"EEA supplier payment", talentCategory:"WF Team",
+   creator:"TBD · Clemens Timmermans candidate", region:["EEA-DE"], regionFit:["EEA-DE"],
+   language:"German", voice:"DE native",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"$25K EEA budget needs German B2B creative. Lex L5 partial (EN).",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"GAP-LONGTAIL-BD", title:"Bangladesh · Bengali VO · supplier payment case", hook:"case",
-   pillar:"Corridor", product:["Multi-currency Account","1688 World Pay"], region:["Longtail-BD"], regionFit:["Longtail-BD"],
-   language:["Bengali"], voice:"BD-local essential", creator:"TBD (KOL deal needed)", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"BD zero representation anywhere. Needs KOL deal or staff hire."},
+  {id:"GAP-EEA-FR", title:"France · French VO · supplier payment case",
+   pillar:"Canton Fair", campaign:"EEA supplier payment", talentCategory:"Influencer (KOL)",
+   creator:"TBD · Mathieu dubbing?", region:["EEA-FR","Longtail-Morocco"], regionFit:["EEA-FR","Longtail-Morocco"],
+   language:"French", voice:"FR native",
+   format:"Short-form video", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"FR B2B does not respond to EN acquisition.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  {id:"GAP-EEA-DE-CASE", title:"Germany · supplier payment case · German VO", hook:"case",
-   pillar:"Canton Fair", product:["Multi-currency Account","Worldcard"], region:["EEA-DE"], regionFit:["EEA-DE"],
-   language:["German"], voice:"DE native", creator:"TBD (Clemens candidate?)", talentType:"WF team/KOL",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"Clemens talking head in T1 is EN. $25K EEA budget needs German B2B creative. Partial: Lex L5 Germany bank fees (EN)."},
+  // ============ CANTON FAIR 2026 — GLOBAL BUYER VOICES ============
+  {id:"CTF-T2-OSHWA", title:"Global Buyer · Oshwalal At Canton Fair",
+   pillar:"Canton Fair", campaign:"Canton Fair 2026 · Buyer voices", talentCategory:"Buyer",
+   creator:"Oshwalal · buyer testimonial", region:["Global"], regionFit:["Longtail","Global"],
+   language:"EN-SEA", voice:"Buyer accent",
+   format:"Short-form video", duration:42,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   notes:"T2 global buyer voice.",
+   thumb:"🎤", thumbBg:"#3E2A0E"},
 
-  {id:"GAP-EEA-FR-CASE", title:"France · supplier payment case · French VO", hook:"case",
-   pillar:"Canton Fair", product:["Multi-currency Account"], region:["EEA-FR","Longtail-Morocco"], regionFit:["EEA-FR","Longtail-Morocco"],
-   language:["French"], voice:"FR native", creator:"TBD (Mathieu dubbing?)", talentType:"KOL/WF team",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"FR B2B does not respond to EN acquisition. Mathieu potential if French rights/availability. Also serves Morocco."},
+  {id:"CTF-T2-ERIC", title:"Global Buyer · Eric (Nigeria) At Canton Fair",
+   pillar:"Canton Fair", campaign:"Canton Fair 2026 · Buyer voices", talentCategory:"Buyer",
+   creator:"Eric · Nigeria buyer", region:["Longtail-NG"], regionFit:["Longtail-NG","Longtail"],
+   language:"EN-NG", voice:"Nigerian English",
+   format:"Short-form video", duration:39,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   notes:"Nigeria voice. B-roll quality.",
+   thumb:"🇳🇬", thumbBg:"#3E2A0E"},
 
-  {id:"GAP-TR-ALL", title:"Turkey · Turkish VO · supplier payment vs competitor", hook:"case",
-   pillar:"Canton Fair", product:["FX","Multi-currency Account"], region:["Turkey"], regionFit:["Turkey"],
-   language:["Turkish"], voice:"TR native essential", creator:"TBD", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap-conditional", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"❓",
-   notes:"CONDITIONAL: Paid-April doc has TR $10K; master context says removed. Steven decision. If active, TR-local essential — EN fails."},
-
-  {id:"GAP-JKT", title:"Indonesia · Bahasa ID · app walkthrough", hook:"brand",
-   pillar:"Canton Fair", product:["App","Multi-currency Account"], region:["ID"], regionFit:["ID"],
-   language:["Bahasa-ID","EN-SEA"], voice:"ID native", creator:"TBD", talentType:"TBD",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap-conditional", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"❓",
-   notes:"CONDITIONAL: Paid-April doc has JKT $9K; master context says removed. Steven decision."},
-
-  // ============ GLOBAL BUYER VOICES ============
-  {id:"CTF-T2-OSHWA", title:"Global Buyer — Oshwalal (Canton Fair)", hook:"case",
-   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Global"], regionFit:["Longtail","Global"],
-   language:["EN-SEA"], voice:"Buyer accent", creator:"Oshwalal (buyer)", talentType:"buyer",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:42, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
-   thumb:"supplier", thumbIcon:"🎤",
-   notes:"T2 global buyer voice. Testimonial format."},
-
-  {id:"CTF-T2-ERIC", title:"Global Buyer — Eric (Nigeria, Canton Fair)", hook:"case",
-   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Longtail-NG"], regionFit:["Longtail-NG","Longtail"],
-   language:["EN-NG"], voice:"NG accent", creator:"Eric (NG buyer)", talentType:"buyer",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:39, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
-   thumb:"supplier", thumbIcon:"🇳🇬",
-   notes:"Nigeria voice. B-roll quality — not a full dedicated creator piece, but paid-usable."},
-
-  {id:"CTF-T2-HARLEY", title:"Global Buyer — Harley (Pakistan, Canton Fair)", hook:"case",
-   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Longtail-PK"], regionFit:["Longtail-PK","Longtail"],
-   language:["EN-PK"], voice:"PK accent", creator:"Harley (PK buyer)", talentType:"buyer",
-   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:41, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
-   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
-   thumb:"supplier", thumbIcon:"🇵🇰",
-   notes:"PK buyer B-roll. NOT the dedicated Urdu creator piece needed — partial only."},
+  {id:"CTF-T2-HARLEY", title:"Global Buyer · Harley (Pakistan) At Canton Fair",
+   pillar:"Canton Fair", campaign:"Canton Fair 2026 · Buyer voices", talentCategory:"Buyer",
+   creator:"Harley · Pakistan buyer", region:["Longtail-PK"], regionFit:["Longtail-PK","Longtail"],
+   language:"EN-PK", voice:"Pakistani English",
+   format:"Short-form video", duration:41,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   notes:"PK buyer B-roll. Not a dedicated Urdu creator piece.",
+   thumb:"🇵🇰", thumbBg:"#3E2A0E"},
 
   // ============ CAROUSELS ============
-  {id:"CAROUSEL-1", title:"Should You Spend $4,000 to Visit Canton Fair?", hook:"brand",
-   pillar:"Canton Fair", product:["—"], region:["Global"], regionFit:["Global"],
-   language:["EN-UK"], voice:"Brand voice", creator:"WF", talentType:"brand",
-   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":true,"static":false},
-   duration:null, status:"design-blocked", platforms:["LinkedIn","IG-Feed"],
-   perf:null, driveLink:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 1/",
-   thumb:"brand", thumbIcon:"📰",
-   notes:"Canton Fair education. DESIGNER UNASSIGNED — blocks shipping."},
+  {id:"CAROUSEL-1", title:"Should You Spend $4,000 To Visit Canton Fair?",
+   pillar:"Canton Fair", campaign:"Canton Fair 2026", talentCategory:"Brand",
+   creator:"WF Social", region:["Global"], regionFit:["Global"],
+   language:"EN-UK", voice:"Brand",
+   format:"Carousel", duration:null,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 1/",
+   notes:"DESIGNER UNASSIGNED. Blocks shipping.",
+   thumb:"📰", thumbBg:"#261F36"},
 
-  {id:"CAROUSEL-5", title:"Why Your Canton Fair Deals Fall Apart After You Fly Home", hook:"supplier",
-   pillar:"Canton Fair", product:["Multi-currency Account","1688 World Pay"], region:["Global"], regionFit:["Global"],
-   language:["EN-UK"], voice:"Brand voice", creator:"WF", talentType:"brand",
-   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":true,"static":false},
-   duration:null, status:"design-blocked", platforms:["LinkedIn","IG-Feed"],
-   perf:null, driveLink:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 5/",
-   thumb:"brand", thumbIcon:"📰",
-   notes:"Post-fair execution (payment context). Closest carousel to payment hook."},
+  {id:"CAROUSEL-5", title:"Why Your Canton Fair Deals Fall Apart After You Fly Home",
+   pillar:"Canton Fair", campaign:"Canton Fair 2026", talentCategory:"Brand",
+   creator:"WF Social", region:["Global"], regionFit:["Global"],
+   language:"EN-UK", voice:"Brand",
+   format:"Carousel", duration:null,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 5/",
+   notes:"DESIGNER UNASSIGNED. Closest carousel to payment hook.",
+   thumb:"📰", thumbBg:"#261F36"},
 
-  {id:"GAP-CAROUSEL-BANK", title:"Bank vs WF — structured comparison carousel", hook:"case",
-   pillar:"Campaigns", product:["Multi-currency Account","FX"], region:["Global","UK","SEA-MY"], regionFit:["UK","SEA-MY","EEA","Global"],
-   language:["EN-UK"], voice:"Brand voice", creator:"TBD", talentType:"brand",
-   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"⚠",
-   notes:"Root-messaging rule: compare to banks only. Not yet packaged as structured asset. Needs fee table + transfer-speed table."},
+  {id:"GAP-CAROUSEL-BANK", title:"Bank vs WF · Structured Comparison Carousel",
+   pillar:"Campaigns", campaign:"FX Promo / Hidden Fees", talentCategory:"Brand",
+   creator:"TBD + Designer", region:["Global","UK","SEA-MY"], regionFit:["UK","SEA-MY","EEA","Global"],
+   language:"EN-UK", voice:"Brand",
+   format:"Carousel", duration:null,
+   lifecycle:"gap",
+   publishedURLs:null, perf:null,
+   finishedFile:null, originalFile:null,
+   notes:"Root messaging rule: compare to banks only. Not packaged as structured asset.",
+   thumb:"⚠", thumbBg:"#3E1414"},
 
-  // ============ EVERGREEN / BRAND / ENTERPRISE ============
-  {id:"BLOG-ENTERPRISE", title:"From First Payment to Platform Scale on One API", hook:"brand",
-   pillar:"Blog", product:["Enterprise API","Multi-currency Account"], region:["Global"], regionFit:["UK","EEA","Global"],
-   language:["EN-UK"], voice:"Brand / Steven", creator:"WF", talentType:"brand",
-   format:"Long-form", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
-   duration:null, status:"ready", platforms:["LinkedIn","Web"],
-   perf:null, driveLink:"gdrive:Blog/From first payment to platform scale on one API - 2026-04-20.docx",
-   thumb:"brand", thumbIcon:"📄",
-   notes:"Enterprise announcement. LinkedIn article ready to post."},
+  // ============ EVERGREEN BRAND / ENTERPRISE ============
+  {id:"BLOG-ENTERPRISE", title:"From First Payment To Platform Scale · On One API",
+   pillar:"Blog", campaign:"Enterprise Launch", talentCategory:"Brand",
+   creator:"WF Brand (Steven)", region:["Global"], regionFit:["UK","EEA","Global"],
+   language:"EN-UK", voice:"Brand",
+   format:"LinkedIn article", duration:null,
+   lifecycle:"ready",
+   publishedURLs:null, perf:null,
+   finishedFile:"gdrive:Blog/From first payment to platform scale on one API - 2026-04-20.docx",
+   originalFile:"gdrive:Blog/",
+   notes:"Enterprise announcement. LinkedIn article ready to post.",
+   thumb:"📄", thumbBg:"#261F36"},
 
-  {id:"WALMART-LI-10", title:"Walmart Webinar — 10 LinkedIn graphic variants", hook:"brand",
-   pillar:"Campaigns", product:["—"], region:["UK","Global"], regionFit:["UK","Global"],
-   language:["EN-UK"], voice:"Brand", creator:"WF", talentType:"brand",
-   format:"Static", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
-   duration:null, status:"review", platforms:["LinkedIn"],
-   perf:null, driveLink:"local:~/Documents/Claude/2026-04-21_walmart_webinar_linkedin/",
-   thumb:"brand", thumbIcon:"🎨",
-   notes:"10 variants (cobranded card, newspaper, boarding pass, dataviz, retro americana, magazine, swiss grid, map, y2k sticker, +1). Steven to pick."},
+  {id:"WALMART-LI-10", title:"Walmart Webinar · 10 LinkedIn Graphic Variants",
+   pillar:"Campaigns", campaign:"Walmart Webinar", talentCategory:"Brand",
+   creator:"WF Social", region:["UK","Global"], regionFit:["UK","Global"],
+   language:"EN-UK", voice:"Brand",
+   format:"Static graphic", duration:null,
+   lifecycle:"edit",
+   publishedURLs:null, perf:null,
+   finishedFile:null,
+   originalFile:"local:~/Documents/Claude/2026-04-21_walmart_webinar_linkedin/",
+   notes:"10 variants — Steven to pick.",
+   thumb:"🎨", thumbBg:"#261F36"},
 
-  {id:"FINTECH-STUDY", title:"Fintech Upper-Funnel Competitor Study (Internal)", hook:"brand",
-   pillar:"Research", product:["—"], region:["—internal"], regionFit:["—internal"],
-   language:["EN-UK"], voice:"Internal", creator:"WF", talentType:"internal",
-   format:"Long-form", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
-   duration:null, status:"live", platforms:["Web"],
-   perf:null, driveLink:"https://socialworldfirst.github.io/fintech-upper-funnel-study/",
-   thumb:"brand", thumbIcon:"📊",
-   notes:"Internal-facing. 8 case studies (Pleo/Nubank/Monzo/Wise/Chime/Revolut/Ramp/Brex). Reference for strategy, not a paid asset."},
-
-  // ============ GAPS - Paid cut-down workflow ============
-  {id:"GAP-CUTS-6S", title:"6s hooks from top-10 existing shorts — paid cut-downs", hook:"brand",
-   pillar:"Campaigns", product:["—all"], region:["Global"], regionFit:["all"],
-   language:["all"], voice:"mixed", creator:"Editor", talentType:"—",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"✂",
-   notes:"MULTIPLIER GAP. Paid (Meta Reels Ads / YT in-stream / TikTok Top-feed) wants 6s/15s/30s. Top-10 hero assets need ad-format variants. Who cuts: us, paid team, or agency? Unresolved."},
-
-  {id:"GAP-CUTS-15S", title:"15s versions from top-10 existing shorts", hook:"brand",
-   pillar:"Campaigns", product:["—all"], region:["Global"], regionFit:["all"],
-   language:["all"], voice:"mixed", creator:"Editor", talentType:"—",
-   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
-   duration:null, status:"gap", platforms:[],
-   perf:null, driveLink:null,
-   thumb:"gap", thumbIcon:"✂",
-   notes:"Same multiplier problem. 15s ideal for IG/TT organic-looking ads."}
+  // ============ PLACEHOLDER LIVE (DEMONSTRATE PUBLISHED STATE) ============
+  // — Mock one as already live to show published-state UI
+  {id:"LEX-L3-MOCK", title:"Supplier Payment Process · Lex Walkthrough",
+   pillar:"KOL", campaign:"1688 Pay Suppliers", talentCategory:"Influencer (KOL)",
+   creator:"Lex Diamo · @lexdiamo", region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG"],
+   language:"EN-SEA", voice:"VN-SEA accent",
+   format:"Short-form video", duration:58,
+   lifecycle:"live",
+   publishedURLs:{
+     yt:"https://youtube.com/shorts/EXAMPLE_LEX_L3",
+     tiktok:"https://www.tiktok.com/@worldfirstglobal/video/EXAMPLE_LEX_L3",
+     ig:"https://www.instagram.com/reel/EXAMPLE_LEX_L3/",
+     fb:"https://www.facebook.com/worldfirstfx/videos/EXAMPLE_LEX_L3",
+     linkedin:null,
+     x:null
+   },
+   perf:{views:148000, erPct:7.4, watchTime:28, updated:"2026-04-21"},
+   finishedFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/LEX_L3_FINAL.mp4",
+   originalFile:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/raw/",
+   notes:"— PLACEHOLDER — demonstrates published-state UI. Real metrics from Sprout pending.",
+   thumb:"🎬", thumbBg:"#0D2E4E"},
 ];
 
-/* ============ FACET DEFINITIONS ============ */
-const FACETS = [
-  {key:"hook", label:"Product / Hook", values:[
-    {v:"worldcard", t:"World Card"},
-    {v:"1688", t:"1688 / supplier pay"},
-    {v:"fx", t:"FX / bank pain"},
-    {v:"case", t:"Customer case"},
-    {v:"brand", t:"Brand"},
-    {v:"supplier", t:"Supplier spotlight"}
-  ]},
-  {key:"region", label:"Region fit", values:[
-    {v:"UK", t:"UK"}, {v:"VN", t:"Vietnam"},
-    {v:"SEA-MY", t:"SEA·MY"}, {v:"SEA-SG", t:"SEA·SG"},
-    {v:"ANZ", t:"Australia·NZ"},
-    {v:"EEA-DE", t:"EEA·Germany"}, {v:"EEA-FR", t:"EEA·France"}, {v:"EEA-NL", t:"EEA·Netherlands"}, {v:"EEA-ES", t:"EEA·Spain"},
-    {v:"Longtail", t:"Longtail (all)"},
-    {v:"Longtail-PK", t:"·Pakistan"}, {v:"Longtail-BD", t:"·Bangladesh"},
-    {v:"Longtail-NG", t:"·Nigeria"}, {v:"Longtail-Ghana", t:"·Ghana"},
-    {v:"Longtail-Morocco", t:"·Morocco"},
-    {v:"Turkey", t:"Turkey"}, {v:"TH", t:"Thailand"},
-    {v:"ID", t:"Indonesia"}, {v:"PH", t:"Philippines"}, {v:"IN", t:"India"},
-    {v:"UAE", t:"UAE"}, {v:"MX", t:"Mexico"}, {v:"BR", t:"Brazil"},
-    {v:"Global", t:"Global"}
-  ]},
-  {key:"language", label:"Language", values:[
-    {v:"EN-UK", t:"English·UK"}, {v:"EN-AU", t:"English·AU"}, {v:"EN-SEA", t:"English·SEA"},
-    {v:"EN-US", t:"English·US"}, {v:"EN-NG", t:"English·NG"}, {v:"EN-PK", t:"English·PK"},
-    {v:"Vietnamese", t:"Vietnamese"}, {v:"Chinese", t:"中文 Mandarin"},
-    {v:"Malay", t:"Malay"}, {v:"Thai", t:"ไทย Thai"},
-    {v:"French", t:"Français"}, {v:"German", t:"Deutsch"},
-    {v:"Spanish", t:"Español"}, {v:"Turkish", t:"Türkçe"},
-    {v:"Urdu", t:"اردو Urdu"}, {v:"Bengali", t:"বাংলা Bengali"},
-    {v:"Bahasa-ID", t:"Bahasa ID"}
-  ]},
-  {key:"format", label:"Format", values:[
-    {v:"Reel", t:"Reel / short"},
-    {v:"Long-form", t:"Long-form"},
-    {v:"Carousel", t:"Carousel"},
-    {v:"Static", t:"Static / image"},
-    {v:"Display/Reel", t:"Display ad"},
-    {v:"Footage bank", t:"Footage bank"}
-  ]},
-  {key:"talentType", label:"Talent type", values:[
-    {v:"WF team", t:"WF team"},
-    {v:"KOL", t:"KOL / creator"},
-    {v:"partner", t:"Partner"},
-    {v:"buyer", t:"Buyer voice"},
-    {v:"brand", t:"Brand / internal"},
-    {v:"TBD", t:"TBD — needs casting"}
-  ]},
-  {key:"status", label:"Status", values:[
-    {v:"live", t:"Live"},
-    {v:"ready", t:"Ready to publish"},
-    {v:"ready-to-reuse", t:"Ready to reuse"},
-    {v:"edit", t:"In edit"},
-    {v:"editor-brief", t:"Editor brief"},
-    {v:"design-blocked", t:"Design blocked"},
-    {v:"review", t:"In review"},
-    {v:"gap", t:"GAP — missing"},
-    {v:"gap-conditional", t:"GAP — conditional"}
-  ]}
+/* =================== CAMPAIGNS META ===================
+   Derived from paid-April budget notes + active programs.
+   Used for campaign bar ordering + colours.
+   ======================================================= */
+const CAMPAIGNS = [
+  "Canton Fair 2026",
+  "Canton Fair 2026 · Buyer voices",
+  "Canton Fair 2026 · KOL",
+  "Worldcard Launch",
+  "1688 Pay Suppliers",
+  "FX Promo / Hidden Fees",
+  "pay2cn + Worldcard (ANZ)",
+  "EEA supplier payment",
+  "Longtail supplier payment",
+  "Trendsetter × WF",
+  "Walmart Webinar",
+  "Enterprise Launch"
 ];
 
-/* ============ STATE ============ */
+/* =================== REGIONS META ===================
+   Ordered by paid-April budget. All regions shown to surface gaps.
+   ==================================================== */
+const REGIONS = [
+  {key:"All",        label:"All regions",   budget:null},
+  {key:"UK",         label:"UK",            budget:197000},
+  {key:"Longtail",   label:"Longtail",      budget:100000, children:["Longtail-PK","Longtail-BD","Longtail-NG","Longtail-Ghana","Longtail-Morocco"]},
+  {key:"VN",         label:"Vietnam",       budget:80000},
+  {key:"SEA-MY",     label:"SEA · MY",      budget:75000},
+  {key:"SEA-SG",     label:"SEA · SG",      budget:75000},
+  {key:"ANZ",        label:"Australia · NZ",budget:10000},
+  {key:"EEA-DE",     label:"EEA · Germany", budget:25000},
+  {key:"EEA-FR",     label:"EEA · France",  budget:25000},
+  {key:"EEA-NL",     label:"EEA · NL",      budget:25000},
+  {key:"Turkey",     label:"Turkey",        budget:10000, conditional:true},
+  {key:"ID",         label:"Indonesia",     budget:9000,  conditional:true},
+  {key:"TH",         label:"Thailand",      budget:null,  forward:true},
+  {key:"Longtail-Morocco", label:"Morocco", budget:null,  forward:true},
+  {key:"UAE",        label:"UAE",           budget:null,  forward:true},
+  {key:"IN",         label:"India",         budget:null,  forward:true},
+  {key:"MX",         label:"Mexico",        budget:null,  forward:true},
+  {key:"BR",         label:"Brazil",        budget:null,  forward:true},
+  {key:"Global",     label:"Global",        budget:null}
+];
+
+/* =================== STATE =================== */
 const state = {
+  region:"All",
+  campaign:"All",
   q:"",
-  filters:{hook:new Set(), region:new Set(), language:new Set(), format:new Set(), talentType:new Set(), status:new Set()},
-  sort:"relevance",
-  gapMode:false
+  filters:{talentCategory:new Set(), lifecycle:new Set(), format:new Set(), language:new Set()},
+  sort:"lifecycle"
 };
 
-/* ============ RENDER ============ */
-function renderFilters(){
-  const aside = document.getElementById("filters");
-  aside.innerHTML = "";
+/* =================== HELPERS =================== */
+function assetMatchesRegion(a, r){
+  if (r === "All") return true;
+  if (r === "Longtail") {
+    const kids = ["Longtail-PK","Longtail-BD","Longtail-NG","Longtail-Ghana","Longtail-Morocco"];
+    return a.region.some(x => kids.includes(x)) || a.regionFit.some(x => kids.includes(x) || x === "Longtail");
+  }
+  return a.region.includes(r) || a.regionFit.includes(r);
+}
+function countAssetsForRegion(r){ return ASSETS.filter(a => assetMatchesRegion(a, r)).length }
+function countGapsForRegion(r){ return ASSETS.filter(a => assetMatchesRegion(a, r) && a.lifecycle === "gap").length }
 
-  // Gap mode toggle
-  const gapRow = document.createElement("div");
-  gapRow.className = "toggle-row" + (state.gapMode ? " active" : "");
-  gapRow.innerHTML = `
-    <div>
-      <div style="font-weight:600">Gap mode</div>
-      <div style="font-size:11px;color:var(--mute);margin-top:2px">Show only missing assets</div>
-    </div>
-    <div class="switch ${state.gapMode ? "on" : ""}"></div>
-  `;
-  gapRow.addEventListener("click", () => {
-    state.gapMode = !state.gapMode;
-    render();
-  });
-  aside.appendChild(gapRow);
-
-  FACETS.forEach(facet => {
-    const f = document.createElement("div");
-    f.className = "facet";
-    const active = state.filters[facet.key];
-    const counts = {};
-    ASSETS.forEach(a => {
-      const vals = Array.isArray(a[facet.key]) ? a[facet.key] : [a[facet.key]];
-      vals.forEach(v => {
-        if (!v) return;
-        counts[v] = (counts[v]||0) + 1;
-        // region special: also count regionFit
-        if (facet.key === "region") {
-          (a.regionFit||[]).forEach(rf => {
-            if (rf !== v) counts[rf] = (counts[rf]||0) + 1;
-          });
-        }
-      });
-    });
-
-    f.innerHTML = `
-      <h3>${facet.label}</h3>
-      <div class="facet-actions">
-        <button data-clear="${facet.key}">clear</button>
-      </div>
-      <div class="chips">
-        ${facet.values.map(item => {
-          const c = counts[item.v] || 0;
-          const isActive = active.has(item.v);
-          return `<div class="chip ${isActive ? "active" : ""}" data-facet="${facet.key}" data-val="${item.v}">
-            ${item.t} <span class="count">${c}</span>
-          </div>`;
-        }).join("")}
-      </div>
-    `;
-    aside.appendChild(f);
-  });
-
-  // Event delegation
-  aside.addEventListener("click", (e) => {
-    const chip = e.target.closest(".chip");
-    if (chip) {
-      const k = chip.dataset.facet;
-      const v = chip.dataset.val;
-      if (state.filters[k].has(v)) state.filters[k].delete(v);
-      else state.filters[k].add(v);
-      render();
-      return;
-    }
-    const btn = e.target.closest("[data-clear]");
-    if (btn) {
-      state.filters[btn.dataset.clear].clear();
-      render();
-    }
-  });
+function lifecycleOrder(lc){
+  const o = {live:0, "winding-down":1, ready:2, edit:3, scripted:4, gap:5, archived:6};
+  return o[lc] ?? 9;
 }
 
 function matches(a){
-  if (state.gapMode && !a.status.startsWith("gap")) return false;
-
-  // Text query
+  if (!assetMatchesRegion(a, state.region)) return false;
+  if (state.campaign !== "All" && a.campaign !== state.campaign) return false;
   if (state.q) {
     const q = state.q.toLowerCase();
-    const hay = [a.title, a.notes, a.creator, a.id, (a.product||[]).join(" "), (a.region||[]).join(" ")].join(" ").toLowerCase();
+    const hay = [a.title, a.notes, a.creator, a.id, a.campaign, a.pillar].join(" ").toLowerCase();
     if (!hay.includes(q)) return false;
   }
-
-  // Filter facets
-  for (const fk of Object.keys(state.filters)) {
-    const set = state.filters[fk];
+  for (const k of Object.keys(state.filters)) {
+    const set = state.filters[k];
     if (set.size === 0) continue;
-    const vals = Array.isArray(a[fk]) ? a[fk] : [a[fk]];
-    // region: also check regionFit for matches
-    let haystack = [...vals];
-    if (fk === "region") haystack.push(...(a.regionFit||[]));
-    const any = [...set].some(v => haystack.includes(v));
-    if (!any) return false;
+    const v = a[k];
+    if (!set.has(v)) return false;
   }
   return true;
+}
+
+function fmtNum(n){
+  if (n >= 1e6) return (n/1e6).toFixed(1)+"M";
+  if (n >= 1e3) return (n/1e3).toFixed(1)+"K";
+  return String(n);
+}
+
+/* =================== RENDER =================== */
+function renderHdrStats(){
+  const total = ASSETS.length;
+  const gaps = ASSETS.filter(a => a.lifecycle === "gap").length;
+  const live = ASSETS.filter(a => a.lifecycle === "live").length;
+  document.getElementById("hdrCount").textContent = total + " assets";
+  document.getElementById("hdrGap").textContent = gaps + " gaps";
+  document.getElementById("hdrLive").textContent = live + " live";
+}
+
+function renderRegionBar(){
+  const bar = document.getElementById("regionBar");
+  bar.innerHTML = REGIONS.map(r => {
+    const active = state.region === r.key;
+    const count = countAssetsForRegion(r.key);
+    const gaps = countGapsForRegion(r.key);
+    return `<button class="region-pill ${active ? "active" : ""}" data-region="${r.key}">
+      <span>${r.label}</span>
+      <span class="rc">${count}</span>
+      ${gaps > 0 ? `<span class="gap-dot" title="${gaps} gaps"></span>` : ""}
+    </button>`;
+  }).join("");
+}
+
+function renderCampaignBar(){
+  const bar = document.getElementById("campaignBar");
+  // Only show campaigns that have assets in the current region
+  const relevantCampaigns = new Set();
+  ASSETS.forEach(a => { if (assetMatchesRegion(a, state.region)) relevantCampaigns.add(a.campaign); });
+  const inOrder = ["All", ...CAMPAIGNS.filter(c => relevantCampaigns.has(c))];
+
+  bar.innerHTML = inOrder.map(c => {
+    const active = state.campaign === c;
+    const cnt = c === "All"
+      ? ASSETS.filter(a => assetMatchesRegion(a, state.region)).length
+      : ASSETS.filter(a => assetMatchesRegion(a, state.region) && a.campaign === c).length;
+    return `<button class="campaign-pill ${active ? "active" : ""}" data-campaign="${c}">
+      ${c === "All" ? "All campaigns" : c}<span class="cc">${cnt}</span>
+    </button>`;
+  }).join("");
+}
+
+function renderFilters(){
+  const aside = document.getElementById("filters");
+  const talentCats = [...new Set(ASSETS.map(a => a.talentCategory))];
+  const lifecycles = ["gap","edit","ready","live","winding-down","archived"];
+  const formats = [...new Set(ASSETS.map(a => a.format))];
+  const languages = [...new Set(ASSETS.map(a => a.language))];
+
+  const counts = (key, val) => ASSETS.filter(a => assetMatchesRegion(a, state.region) && (state.campaign === "All" || a.campaign === state.campaign) && a[key] === val).length;
+
+  function facetHTML(key, label, values){
+    return `<div class="facet">
+      <h3>${label}</h3>
+      <div class="chips">
+        ${values.map(v => {
+          const active = state.filters[key].has(v);
+          const c = counts(key, v);
+          const lcMark = key === "lifecycle" ? `<span class="lc-dot lc-${v === "winding-down" ? "winding" : v}"></span>` : "";
+          return `<button class="chip ${active ? "active" : ""}" data-facet="${key}" data-val="${v}">
+            <span>${lcMark}${v}</span>
+            <span class="c">${c}</span>
+          </button>`;
+        }).join("")}
+      </div>
+    </div>`;
+  }
+
+  aside.innerHTML =
+    facetHTML("lifecycle", "Lifecycle stage", lifecycles) +
+    facetHTML("talentCategory", "Talent", talentCats) +
+    facetHTML("format", "Format", formats) +
+    facetHTML("language", "Language", languages);
+}
+
+function renderBreadcrumb(){
+  const bc = document.getElementById("breadcrumb");
+  const r = REGIONS.find(x => x.key === state.region);
+  const regionLabel = r ? r.label : state.region;
+  bc.innerHTML = `
+    <strong>${regionLabel}</strong>
+    ${state.campaign !== "All" ? `<span class="sep">/</span> <strong>${state.campaign}</strong>` : ""}
+    <span class="bc-count" id="bcCount"></span>
+  `;
 }
 
 function renderCards(){
@@ -852,124 +934,165 @@ function renderCards(){
   let filtered = ASSETS.filter(matches);
 
   // Sort
-  const sortBy = state.sort;
-  if (sortBy === "gap-first") filtered.sort((a,b) => (a.status.startsWith("gap")?0:1) - (b.status.startsWith("gap")?0:1));
-  else if (sortBy === "region") filtered.sort((a,b) => (a.region[0]||"z").localeCompare(b.region[0]||"z"));
-  else if (sortBy === "status") filtered.sort((a,b) => (a.status||"z").localeCompare(b.status||"z"));
-  else if (sortBy === "newest") filtered.reverse();
+  if (state.sort === "lifecycle") filtered.sort((a,b) => lifecycleOrder(a.lifecycle) - lifecycleOrder(b.lifecycle));
+  else if (state.sort === "gap-first") filtered.sort((a,b) => (a.lifecycle === "gap" ? 0 : 1) - (b.lifecycle === "gap" ? 0 : 1));
+  else if (state.sort === "performance") filtered.sort((a,b) => (b.perf?.views || 0) - (a.perf?.views || 0));
+  else if (state.sort === "newest") filtered.reverse();
 
-  document.getElementById("resultsCount").innerHTML =
-    `<strong style="color:var(--text)">${filtered.length}</strong> of ${ASSETS.length} assets` +
-    (state.gapMode ? ` <span style="color:var(--bad)">· GAP mode</span>` : "");
+  document.getElementById("bcCount").textContent = `${filtered.length} of ${ASSETS.length}`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state">
-      <h2>No assets match these filters</h2>
-      <p>Try clearing some chips on the left, or toggle off Gap mode.
-      If this is a real gap in production, it's worth flagging for the next content ideation.</p>
+    grid.innerHTML = `<div class="empty">
+      <h2>No assets in this view</h2>
+      <p>Try a different region or campaign, or reset filters.</p>
     </div>`;
     return;
   }
 
   grid.innerHTML = filtered.map(a => {
-    const isGap = a.status.startsWith("gap");
-    const cuts = a.cuts || {};
-    const cutKeys = ["60s","30s","15s","6s","carousel","static"];
-    const availCuts = cutKeys.filter(k => cuts[k]);
-    const missingCuts = cutKeys.filter(k => !cuts[k] && (k==="60s"||k==="30s"||k==="15s"||k==="6s")); // only show missing for video cuts
+    const isGap = a.lifecycle === "gap";
+    const talentClass = a.talentCategory.toLowerCase().includes("kol") ? "kol"
+      : a.talentCategory.toLowerCase().includes("team") ? "team"
+      : a.talentCategory.toLowerCase().includes("freelancer") ? "freelancer"
+      : a.talentCategory.toLowerCase().includes("partner") ? "partner"
+      : a.talentCategory.toLowerCase().includes("buyer") ? "buyer"
+      : "brand";
+
+    // Published channels
+    const channels = a.publishedURLs || {};
+    const chLabels = {yt:"YT",tiktok:"TT",ig:"IG",fb:"FB",linkedin:"LI",x:"X"};
+    const channelsHtml = a.lifecycle === "live" ? `<div class="channels" title="Published on">
+      ${Object.entries(chLabels).map(([k,l]) => {
+        const url = channels[k];
+        return url ? `<a class="ch-link has" href="${url}" target="_blank" title="${k} · view post">${l}</a>`
+                   : `<div class="ch-link" title="Not published on ${k}">${l}</div>`;
+      }).join("")}
+    </div>` : "";
+
+    // Performance
+    const perfHtml = a.lifecycle === "live"
+      ? (a.perf ? `<div class="perf">
+          <div class="perf-cell"><span class="perf-val">${fmtNum(a.perf.views)}</span><span class="perf-lbl">Views</span></div>
+          <div class="perf-cell"><span class="perf-val">${a.perf.erPct}%</span><span class="perf-lbl">ER</span></div>
+          <div class="perf-cell"><span class="perf-val">${a.perf.watchTime}s</span><span class="perf-lbl">Watch</span></div>
+        </div>` : `<div class="perf-placeholder">Performance pending Sprout ingestion</div>`)
+      : "";
+
+    // Lifecycle bar (visual progression)
+    const stages = ["gap","edit","ready","live","winding"];
+    const stageIdx = {gap:0, scripted:0, edit:1, ready:2, live:3, "winding-down":4, archived:4}[a.lifecycle] ?? 0;
+    const lcBar = `<div class="lifecycle">${stages.map((s,i) => `<div class="lc-seg ${i <= stageIdx ? `on ${s}` : ""}"></div>`).join("")}</div>`;
+
+    // Source files
+    const srcRow = `<div class="source-row">
+      ${a.finishedFile
+        ? `<a class="source-link" href="#" title="${a.finishedFile}">Finished</a>`
+        : `<span class="source-missing">Finished —</span>`}
+      <span>·</span>
+      ${a.originalFile
+        ? `<a class="source-link" href="#" title="${a.originalFile}">Original</a>`
+        : `<span class="source-missing">Original —</span>`}
+    </div>`;
 
     return `<div class="card ${isGap ? "gap" : ""}">
-      <div class="thumb hero-${a.thumb||'brand'}">
-        <div class="thumb-icon">${a.thumbIcon||"📎"}</div>
+      <div class="thumb" style="background:${a.thumbBg || "#1A1E28"}">
+        <div class="thumb-bg">${a.thumb || "📎"}</div>
         <div class="thumb-badges">
-          ${a.status === "live" ? `<div class="thumb-badge live">LIVE</div>` : ""}
-          ${isGap ? `<div class="thumb-badge gap">GAP</div>` : ""}
-          ${a.status === "ready" ? `<div class="thumb-badge" style="background:rgba(52,211,153,0.85);color:#0A2E1F">READY</div>` : ""}
-          ${a.status === "design-blocked" ? `<div class="thumb-badge" style="background:rgba(251,191,36,0.85);color:#2E1F0A">BLOCKED</div>` : ""}
+          <span class="badge ${a.lifecycle === "winding-down" ? "winding" : a.lifecycle}">${a.lifecycle === "winding-down" ? "WINDING DOWN" : a.lifecycle}</span>
+          ${a.format === "Carousel" ? `<span class="badge" style="background:rgba(0,0,0,0.65)">CAROUSEL</span>` :
+            a.format === "LinkedIn article" ? `<span class="badge" style="background:rgba(0,0,0,0.65)">ARTICLE</span>` :
+            a.format === "Static graphic" ? `<span class="badge" style="background:rgba(0,0,0,0.65)">STATIC</span>` : ""}
         </div>
-        ${a.duration ? `<div class="thumb-dur">${a.duration}s</div>` : ""}
+        <div class="thumb-poster">
+          <div class="thumb-title">${a.title}</div>
+          <div class="thumb-sub">${a.creator}</div>
+        </div>
+        ${a.duration ? `<div class="badge-dur">${a.duration}s</div>` : ""}
       </div>
-      <div class="card-body">
-        <div class="card-title">${a.title}</div>
-        <div class="card-meta">
-          <span class="pillar">${a.pillar}</span>
-          <span class="dot">·</span>
-          <span>${a.creator}</span>
-          <span class="dot">·</span>
-          <span style="font-family:JetBrains Mono,monospace;font-size:10px">${a.id}</span>
+
+      <div class="body">
+        <div class="campaign-ref">${a.campaign}</div>
+        <div class="meta-row">
+          <span class="tag ${talentClass}">${a.talentCategory}</span>
+          <span>·</span>
+          <span class="creator">${a.region.join(", ")}</span>
+          <span>·</span>
+          <span>${a.language}</span>
         </div>
-        <div class="card-tags">
-          ${a.product.slice(0,3).map(p => `<span class="tag product">${p}</span>`).join("")}
-          ${a.region.slice(0,3).map(r => `<span class="tag region">${r}</span>`).join("")}
-          ${a.language.slice(0,2).map(l => `<span class="tag lang">${l}</span>`).join("")}
-          ${a.voice ? `<span class="tag voice">${a.voice}</span>` : ""}
-        </div>
-        ${!isGap ? `<div class="cuts-row">
-          ${["60s","30s","15s","6s"].map(k => {
-            const has = cuts[k];
-            return `<span class="cut ${has ? "has" : "missing"}">${has ? "✓" : "✗"} ${k}</span>`;
-          }).join("")}
-        </div>` : `<div style="font-size:11px;color:var(--bad);padding:6px 8px;background:rgba(248,113,113,0.08);border-radius:6px;border:1px solid rgba(248,113,113,0.2)">
+        ${lcBar}
+        ${channelsHtml}
+        ${perfHtml}
+        ${isGap ? `<div style="font-size:11px;color:var(--bad);padding:6px 8px;background:rgba(239,68,68,0.06);border-radius:5px">
           ${a.notes}
-        </div>`}
-        ${a.notes && !isGap ? `<div style="font-size:11.5px;color:var(--text-dim);line-height:1.45">${a.notes}</div>` : ""}
-        <div class="actions">
-          ${a.driveLink ? `<a class="btn primary" href="${a.driveLink.startsWith('http') ? a.driveLink : '#'}" title="${a.driveLink}">Open source →</a>` : ""}
-          ${isGap ? `<button class="btn warn">Spin up production</button>` : `<button class="btn ghost" title="mailto link in Phase 2">Request cut</button>`}
-        </div>
+        </div>` : `<div style="font-size:11px;color:var(--text-dim);line-height:1.4">${a.notes}</div>`}
+        ${srcRow}
       </div>
     </div>`;
   }).join("");
 }
 
-function renderStats(){
-  const total = ASSETS.length;
-  const gaps = ASSETS.filter(a => a.status.startsWith("gap")).length;
-  const live = ASSETS.filter(a => a.status === "live" || a.status === "ready").length;
-  const edit = ASSETS.filter(a => a.status === "edit").length;
-  const regions = new Set(ASSETS.flatMap(a => a.regionFit||[])).size;
-  const creators = new Set(ASSETS.map(a => a.creator)).size;
-
-  document.getElementById("statsBar").innerHTML = `
-    <div class="stat"><span class="n">${total}</span><span class="l">Assets tracked</span></div>
-    <div class="stat gap"><span class="n">${gaps}</span><span class="l">Gaps flagged</span></div>
-    <div class="stat live"><span class="n">${live}</span><span class="l">Ready / live</span></div>
-    <div class="stat"><span class="n">${edit}</span><span class="l">In edit</span></div>
-    <div class="stat"><span class="n">${regions}</span><span class="l">Regions mapped</span></div>
-    <div class="stat"><span class="n">${creators}</span><span class="l">Creators</span></div>
-  `;
-}
-
 function render(){
+  renderRegionBar();
+  renderCampaignBar();
   renderFilters();
+  renderBreadcrumb();
   renderCards();
 }
 
+/* =================== EVENTS =================== */
+// Bound ONCE to document — works even after DOM rebuild
 function init(){
-  renderStats();
+  renderHdrStats();
   render();
 
+  // Region bar
+  document.getElementById("regionBar").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-region]");
+    if (!btn) return;
+    state.region = btn.dataset.region;
+    state.campaign = "All";
+    render();
+  });
+
+  // Campaign bar
+  document.getElementById("campaignBar").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-campaign]");
+    if (!btn) return;
+    state.campaign = btn.dataset.campaign;
+    render();
+  });
+
+  // Facet chips in sidebar
+  document.getElementById("filters").addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-facet]");
+    if (!chip) return;
+    const k = chip.dataset.facet;
+    const v = chip.dataset.val;
+    if (state.filters[k].has(v)) state.filters[k].delete(v);
+    else state.filters[k].add(v);
+    render();
+  });
+
+  // Search
   document.getElementById("searchInput").addEventListener("input", (e) => {
     state.q = e.target.value;
     renderCards();
   });
+
+  // Sort
   document.getElementById("sortSelect").addEventListener("change", (e) => {
     state.sort = e.target.value;
     renderCards();
   });
+
+  // Clear
   document.getElementById("clearAll").addEventListener("click", () => {
+    state.region = "All";
+    state.campaign = "All";
     state.q = "";
-    state.gapMode = false;
     Object.values(state.filters).forEach(s => s.clear());
     document.getElementById("searchInput").value = "";
     render();
-  });
-  // keyboard shortcut /
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
-      e.preventDefault();
-      document.getElementById("searchInput").focus();
-    }
   });
 }
 

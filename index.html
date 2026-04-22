@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WorldFirst · Asset Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#E6185F;
+    --pink-soft:#FFE4EE;
+    --ink:#0B0D12;
+    --ink-2:#151821;
+    --ink-3:#1E2230;
+    --ink-4:#2A2F3F;
+    --line:#2A2F3F;
+    --mute:#8A90A2;
+    --text:#E7EAF2;
+    --text-dim:#B3B8C8;
+    --good:#34D399;
+    --warn:#FBBF24;
+    --bad:#F87171;
+    --blue:#60A5FA;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,sans-serif}
+  body{min-height:100vh;display:flex;flex-direction:column}
+  a{color:inherit}
+  button{font-family:inherit;cursor:pointer}
+
+  /* HEADER */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:20px 32px;
+    background:linear-gradient(180deg,#0F121A 0%,var(--ink) 100%);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(12px);
+  }
+  .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-mark{
+    width:36px;height:36px;border-radius:8px;
+    background:linear-gradient(135deg,var(--pink) 0%,#FF6B9A 100%);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:white;font-size:16px;letter-spacing:-0.5px;
+  }
+  .brand-text{line-height:1.1}
+  .brand-text .t1{font-weight:700;font-size:15px;color:var(--text)}
+  .brand-text .t2{font-size:11px;color:var(--mute);letter-spacing:0.6px;text-transform:uppercase;margin-top:2px}
+  h1{
+    font-family:Fraunces,Georgia,serif;font-weight:600;font-size:36px;
+    letter-spacing:-1.2px;margin:18px 0 6px;color:var(--text);
+  }
+  h1 em{color:var(--pink);font-style:italic}
+  .subtitle{color:var(--text-dim);max-width:760px;font-size:15px;line-height:1.55}
+  .hdr-stats{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
+  .stat{
+    background:var(--ink-2);border:1px solid var(--line);
+    padding:10px 16px;border-radius:10px;display:flex;gap:10px;align-items:baseline;
+  }
+  .stat .n{font-weight:700;font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
+  .stat .l{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:0.7px}
+  .stat.gap .n{color:var(--bad)}
+  .stat.live .n{color:var(--good)}
+
+  /* SEARCH BAR */
+  .searchbar{
+    display:flex;gap:10px;margin-top:20px;align-items:center;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:12px;
+    padding:8px 14px;
+  }
+  .searchbar input{
+    flex:1;background:transparent;border:0;outline:0;color:var(--text);
+    font-size:15px;font-family:inherit;padding:8px 4px;
+  }
+  .searchbar input::placeholder{color:var(--mute)}
+  .searchbar kbd{
+    font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);
+    border:1px solid var(--line);padding:2px 6px;border-radius:4px;background:var(--ink-3);
+  }
+  .sortbox{
+    display:flex;gap:6px;align-items:center;padding-left:10px;border-left:1px solid var(--line);
+  }
+  .sortbox label{color:var(--mute);font-size:12px}
+  .sortbox select{
+    background:transparent;color:var(--text);border:0;outline:0;font-family:inherit;
+    font-size:13px;padding:4px;cursor:pointer;
+  }
+  .sortbox select option{background:var(--ink-2)}
+
+  /* MAIN GRID */
+  main{display:grid;grid-template-columns:280px 1fr;gap:0;flex:1;min-height:0}
+
+  /* SIDEBAR FILTERS */
+  aside{
+    border-right:1px solid var(--line);
+    padding:24px 20px;overflow-y:auto;
+    background:var(--ink);
+    position:sticky;top:234px;
+    height:calc(100vh - 234px);
+  }
+  .facet{margin-bottom:22px}
+  .facet h3{
+    font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--mute);
+    margin:0 0 10px;font-weight:700;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{
+    background:var(--ink-2);border:1px solid var(--line);
+    color:var(--text-dim);padding:5px 10px;border-radius:20px;font-size:12px;
+    cursor:pointer;transition:all .15s;user-select:none;
+    display:flex;align-items:center;gap:5px;
+  }
+  .chip:hover{border-color:var(--mute);color:var(--text)}
+  .chip.active{background:var(--pink);border-color:var(--pink);color:white;font-weight:600}
+  .chip .count{
+    font-size:10px;opacity:0.7;font-variant-numeric:tabular-nums;
+    font-family:JetBrains Mono,monospace;
+  }
+  .facet-actions{display:flex;gap:6px;margin-bottom:10px}
+  .facet-actions button{
+    background:transparent;border:1px solid var(--line);color:var(--mute);
+    padding:4px 8px;border-radius:6px;font-size:11px;
+  }
+  .facet-actions button:hover{color:var(--text);border-color:var(--mute)}
+
+  .toggle-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 10px;background:var(--ink-2);border:1px solid var(--line);
+    border-radius:8px;margin-bottom:10px;font-size:13px;
+  }
+  .toggle-row.active{background:rgba(230,24,95,0.08);border-color:var(--pink)}
+  .switch{
+    width:36px;height:20px;background:var(--ink-4);border-radius:10px;
+    position:relative;transition:background .15s;cursor:pointer;
+  }
+  .switch::after{
+    content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;
+    background:var(--text);border-radius:50%;transition:left .15s;
+  }
+  .switch.on{background:var(--pink)}
+  .switch.on::after{left:18px;background:white}
+
+  /* CARD GRID */
+  .grid-wrap{padding:24px 28px;overflow-y:auto}
+  .results-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:18px;font-size:13px;color:var(--text-dim);
+  }
+  .clear-all{
+    background:transparent;border:1px solid var(--line);color:var(--mute);
+    padding:4px 10px;border-radius:6px;font-size:12px;
+  }
+  .clear-all:hover{color:var(--pink);border-color:var(--pink)}
+  .cards{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:border-color .15s,transform .15s;
+  }
+  .card:hover{border-color:var(--ink-4);transform:translateY(-2px)}
+  .card.gap{
+    border:1.5px dashed rgba(248,113,113,0.5);background:rgba(248,113,113,0.04);
+  }
+  .card.gap:hover{border-color:var(--bad)}
+  .thumb{
+    aspect-ratio:16/10;
+    background:linear-gradient(135deg,#1F2433 0%,#151821 100%);
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .thumb.hero-worldcard{background:linear-gradient(135deg,#2A1829 0%,#3D0E24 100%)}
+  .thumb.hero-1688{background:linear-gradient(135deg,#1A2336 0%,#0D2E4E 100%)}
+  .thumb.hero-fx{background:linear-gradient(135deg,#1F2B1F 0%,#0E3A1E 100%)}
+  .thumb.hero-supplier{background:linear-gradient(135deg,#2E2318 0%,#3E2A0E 100%)}
+  .thumb.hero-brand{background:linear-gradient(135deg,#261F36 0%,#4A1C70 100%)}
+  .thumb.hero-case{background:linear-gradient(135deg,#1B2C36 0%,#0E4760 100%)}
+  .thumb.hero-gap{background:linear-gradient(135deg,#2A1A1A 0%,#3E1414 100%)}
+  .thumb-icon{
+    font-size:42px;opacity:0.65;color:var(--text);
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  }
+  .thumb-badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+  .thumb-badge{
+    background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);color:white;
+    padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;
+    letter-spacing:0.4px;text-transform:uppercase;
+  }
+  .thumb-badge.live{background:rgba(52,211,153,0.85);color:#0A2E1F}
+  .thumb-badge.gap{background:rgba(248,113,113,0.85);color:#2E0A0A}
+  .thumb-dur{
+    position:absolute;bottom:10px;right:10px;
+    background:rgba(0,0,0,0.7);color:white;padding:3px 8px;border-radius:6px;
+    font-size:11px;font-family:JetBrains Mono,monospace;font-weight:600;
+  }
+
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .card-title{
+    font-weight:600;font-size:14px;line-height:1.35;color:var(--text);
+    letter-spacing:-0.2px;
+  }
+  .card.gap .card-title{color:var(--text-dim);font-style:italic}
+  .card-meta{
+    display:flex;gap:6px;font-size:11px;color:var(--mute);
+    align-items:center;flex-wrap:wrap;
+  }
+  .card-meta .pillar{
+    background:var(--ink-3);color:var(--text-dim);
+    padding:2px 7px;border-radius:4px;font-weight:600;
+  }
+  .card-meta .dot{opacity:0.4}
+
+  .card-tags{display:flex;flex-wrap:wrap;gap:4px}
+  .tag{
+    font-size:10.5px;padding:2px 7px;border-radius:4px;
+    background:var(--ink-3);color:var(--text-dim);font-weight:500;
+    border:1px solid transparent;
+  }
+  .tag.lang{background:rgba(96,165,250,0.12);color:var(--blue);border-color:rgba(96,165,250,0.2)}
+  .tag.region{background:rgba(230,24,95,0.12);color:#FF6B9A;border-color:rgba(230,24,95,0.2)}
+  .tag.product{background:rgba(52,211,153,0.10);color:var(--good);border-color:rgba(52,211,153,0.2)}
+  .tag.voice{background:rgba(251,191,36,0.10);color:var(--warn);border-color:rgba(251,191,36,0.2)}
+
+  .cuts-row{
+    display:flex;gap:6px;font-family:JetBrains Mono,monospace;font-size:10px;
+    padding:6px 8px;background:var(--ink);border-radius:6px;border:1px solid var(--line);
+  }
+  .cut{color:var(--mute);display:flex;align-items:center;gap:3px}
+  .cut.has{color:var(--good)}
+  .cut.missing{color:var(--bad);text-decoration:line-through;opacity:0.6}
+
+  .perf-pill{
+    display:inline-flex;gap:8px;align-items:center;padding:4px 9px;border-radius:6px;
+    background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);
+    font-size:10.5px;color:var(--blue);font-family:JetBrains Mono,monospace;
+    align-self:flex-start;
+  }
+  .perf-pill.hot{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.25);color:var(--good)}
+  .perf-pill.cold{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.25);color:var(--warn)}
+
+  .actions{
+    display:flex;gap:6px;margin-top:auto;padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+  .btn{
+    flex:1;padding:8px 10px;border-radius:7px;font-size:12px;font-weight:600;
+    text-align:center;text-decoration:none;border:1px solid transparent;
+    transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;
+  }
+  .btn.primary{background:var(--pink);color:white}
+  .btn.primary:hover{background:#D01655}
+  .btn.ghost{background:transparent;border-color:var(--line);color:var(--text-dim)}
+  .btn.ghost:hover{border-color:var(--mute);color:var(--text)}
+  .btn.warn{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.3);color:var(--bad)}
+  .btn.warn:hover{background:rgba(248,113,113,0.15)}
+
+  /* MOBILE */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr}
+    aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+    h1{font-size:28px}
+    header{padding:18px 20px}
+    .grid-wrap{padding:20px}
+  }
+
+  /* Footer */
+  footer{
+    padding:20px 32px;border-top:1px solid var(--line);color:var(--mute);
+    font-size:11px;background:var(--ink);
+  }
+  footer a{color:var(--text-dim);text-decoration:none;border-bottom:1px dotted var(--line)}
+  footer a:hover{color:var(--pink)}
+
+  /* Empty state */
+  .empty-state{
+    grid-column:1/-1;padding:60px 30px;text-align:center;color:var(--mute);
+    border:1.5px dashed var(--line);border-radius:14px;
+  }
+  .empty-state h2{font-family:Fraunces,serif;font-weight:400;color:var(--text);margin-bottom:8px}
+  .empty-state p{max-width:480px;margin:0 auto;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="brand">
+      <div class="brand-mark">WF</div>
+      <div class="brand-text">
+        <div class="t1">WorldFirst · Asset Library</div>
+        <div class="t2">Content Ops · Production Coordinator</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--mute);font-family:JetBrains Mono,monospace">
+      v0.1 concept · 2026-04-22
+    </div>
+  </div>
+  <h1>Every WF social asset, <em>filterable by region, language, product.</em></h1>
+  <div class="subtitle">
+    Bridge between upper-funnel social content and paid-team creative targeting.
+    Each card links to source files on Drive, shows which cuts exist (60s/30s/15s/6s), and flags gaps so you know what still needs to be produced or localised.
+  </div>
+  <div class="hdr-stats" id="statsBar"></div>
+  <div class="searchbar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--mute)">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input id="searchInput" placeholder='Search — try "worldcard" · "1688" · "UK" · "supplier case"' />
+    <kbd>/</kbd>
+    <div class="sortbox">
+      <label>Sort</label>
+      <select id="sortSelect">
+        <option value="relevance">Relevance</option>
+        <option value="newest">Newest</option>
+        <option value="region">Region A-Z</option>
+        <option value="status">Status</option>
+        <option value="gap-first">Gaps first</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <aside id="filters"></aside>
+  <section class="grid-wrap">
+    <div class="results-bar">
+      <div id="resultsCount">— of — assets</div>
+      <button class="clear-all" id="clearAll">Clear all filters</button>
+    </div>
+    <div class="cards" id="cardsGrid"></div>
+  </section>
+</main>
+
+<footer>
+  Asset Library concept · WorldFirst Content Ops ·
+  Source of truth: <a href="#">gdrive:Content Strategy/Content Ops/Asset_Library.xlsx</a> ·
+  Feedback: <a href="#">@Steven Chen</a> on #senpai-claw
+</footer>
+
+<script>
+/* =========================================================================
+   ASSET DATA — seeded from verified production state as of 2026-04-22
+   One row = one distributable asset or cut.
+   Parent/child linkage via parentId for cuts.
+   ========================================================================= */
+const ASSETS = [
+  // ============ WORLDCARD CLUSTER ============
+  {id:"CTF-T1-08", title:"Meet The World Card — Live at Canton Fair", hook:"brand",
+   pillar:"Canton Fair", product:["Worldcard"], region:["UK"], regionFit:["UK","Global"],
+   language:["EN-UK"], voice:"Lawrence / UK accent", creator:"Lawrence (UK team)", talentType:"WF team",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:58, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","FB-Reels","LinkedIn"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier1_cuts.docx",
+   thumb:"worldcard", thumbIcon:"💳",
+   notes:"Lawrence UK holding newly-released World Card with mic clipped to it. Factual/brand angle."},
+
+  {id:"LEX-L9", title:"World Card: Virtual Cards + Freeze Employee Spending", hook:"brand",
+   pillar:"KOL", product:["Worldcard"], region:["VN"], regionFit:["VN","UK","SEA-MY","SEA-SG","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo (@lexdiamo)", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:62, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"worldcard", thumbIcon:"🔐",
+   notes:"Lex walks through virtual card setup, freezing employee spending. Use case angle."},
+
+  {id:"LEX-L10", title:"1.2% Cashback On Every Business Transaction", hook:"case",
+   pillar:"KOL", product:["Worldcard"], region:["VN","UK"], regionFit:["VN","UK","SEA-MY","SEA-SG","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo (@lexdiamo)", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:58, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"worldcard", thumbIcon:"💰",
+   notes:"Cashback 1.2% · reinvest into business. Can double for UK with accent caveat."},
+
+  // GAPS - Worldcard
+  {id:"GAP-ANZ-WC", title:"ANZ Worldcard 1% Cashback — needs production", hook:"brand",
+   pillar:"Canton Fair", product:["Worldcard"], region:["ANZ"], regionFit:["ANZ"],
+   language:["EN-AU"], voice:"AU accent needed", creator:"TBD (Jim Vrondas candidate)", talentType:"WF team",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"1% cashback (different from UK/VN 1.2%) — distinct creative required. $10K paid budget explicitly calls this out. Zero content exists."},
+
+  {id:"GAP-UK-WC2", title:"UK Worldcard — second creative (cashback-forward)", hook:"brand",
+   pillar:"Canton Fair", product:["Worldcard"], region:["UK"], regionFit:["UK"],
+   language:["EN-UK"], voice:"UK accent", creator:"TBD", talentType:"WF team",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"$197K UK budget — 1 Worldcard piece (T1-08) is light. Cashback-forward benefit angle still missing."},
+
+  // ============ 1688 / SUPPLIER PAYMENT CLUSTER ============
+  {id:"LEX-L1", title:"1688 Explainer — What It Is and Why It Matters", hook:"supplier",
+   pillar:"KOL", product:["1688 World Pay"], region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:65, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"1688", thumbIcon:"🏭",
+   notes:"Foundational 1688 piece. VN-anchored but serves SEA broadly."},
+
+  {id:"LEX-L2", title:"WF × 1688 Partnership — Pay Suppliers in CNY Directly", hook:"supplier",
+   pillar:"KOL", product:["1688 World Pay"], region:["VN","SEA-MY","SEA-SG"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:58, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"1688", thumbIcon:"🤝",
+   notes:"Partnership angle. Lead creative for SEA $75K budget line."},
+
+  {id:"LEX-L7", title:"Role-Play: 150k Chinese Suppliers On Your Shortlist", hook:"supplier",
+   pillar:"KOL", product:["1688 World Pay","Multi-currency Account"], region:["VN","SEA-MY"], regionFit:["VN","SEA-MY","SEA-SG","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:72, status:"edit", platforms:["TikTok","IG-Reels"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"1688", thumbIcon:"👥",
+   notes:"Role-play format, scale message. Strong for SEA reach."},
+
+  {id:"ALICE-1688", title:"Pay 1688 in CNY — No Currency Conversion Needed", hook:"supplier",
+   pillar:"Canton Fair", product:["1688 World Pay"], region:["Global"], regionFit:["SEA-MY","SEA-SG","UK","VN","Global"],
+   language:["EN-SEA"], voice:"Alice / SEA accent", creator:"Alice (WF 1688 partnership)", talentType:"partner",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:48, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts","LinkedIn"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   thumb:"1688", thumbIcon:"💱",
+   notes:"A0006 source clip. Strong bank-vs-WF root-message piece."},
+
+  // GAPS - 1688
+  {id:"GAP-SEA-1688-MYR", title:"SEA 1688 — MYR→CNH hook creative", hook:"supplier",
+   pillar:"Canton Fair", product:["1688 World Pay"], region:["SEA-MY"], regionFit:["SEA-MY"],
+   language:["EN-SEA","Malay"], voice:"MY-local preferred", creator:"TBD (KOL candidate)", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"MYR specifically unrepresented. $75K SEA budget wants currency-pair hook. Can partially repurpose Lex L2 with MYR overlay."},
+
+  {id:"GAP-TH-ALL", title:"Thailand content — THB → CNH", hook:"supplier",
+   pillar:"Canton Fair", product:["1688 World Pay","Multi-currency Account"], region:["TH"], regionFit:["TH"],
+   language:["Thai"], voice:"TH-local essential", creator:"TBD (KOL candidate)", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"Thailand completely unrepresented. EN does not work in TH B2B. Requires Thai-language production."},
+
+  {id:"GAP-MA-1688-FR", title:"Morocco · 1688 in French VO", hook:"supplier",
+   pillar:"Corridor", product:["1688 World Pay"], region:["Longtail-Morocco"], regionFit:["Longtail-Morocco"],
+   language:["French"], voice:"FR-Morocco or standard FR", creator:"TBD (FR-speaking KOL or dub Lex L1)", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"B2B in Morocco is French-dominant. Forward-looking region. Lex L1 could be dubbed/subtitled as first pass."},
+
+  // ============ FX / BANK PAIN CLUSTER ============
+  {id:"JON-A0036", title:"Jon Law — FX Hero · Traditional Bank Pain", hook:"fx",
+   pillar:"Canton Fair", product:["FX","Multi-currency Account"], region:["UK"], regionFit:["UK","EEA","Global"],
+   language:["EN-UK"], voice:"Jon Law / UK", creator:"Jon Law (@jonlawedu)", talentType:"partner",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:96, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","LinkedIn"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   thumb:"fx", thumbIcon:"💷",
+   notes:"Expanded 1k → 2.8k. Full creator-arc preamble. Candidate for UK FX paid hero + Enterprise/LinkedIn angle."},
+
+  {id:"LEX-L5", title:"Germany Bank Fees vs WorldFirst — $500 vs $100", hook:"case",
+   pillar:"KOL", product:["FX","Multi-currency Account"], region:["EEA-DE","UK"], regionFit:["EEA-DE","UK","VN","Global"],
+   language:["EN-SEA"], voice:"Lex / VN-SEA", creator:"Lex Diamo", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:54, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts","LinkedIn"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/KOL - Lex Diamo/",
+   thumb:"case", thumbIcon:"🇩🇪",
+   notes:"$500 vs $100 hero number. Strong comparison creative. EEA-DE fit, can repurpose for UK paid."},
+
+  {id:"JIM-AU-A0119", title:"Lock Your FX Rate — Forwards Explained", hook:"fx",
+   pillar:"Canton Fair", product:["Forwards","FX"], region:["ANZ"], regionFit:["ANZ","UK","EEA"],
+   language:["EN-AU"], voice:"Jim / AU accent", creator:"Jim Vrondas (WF ANZ)", talentType:"WF team",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:44, status:"edit", platforms:["YT-Shorts","TikTok","IG-Reels","LinkedIn"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/",
+   thumb:"fx", thumbIcon:"🔒",
+   notes:"A0119. Primary ANZ pay2cn/Forwards asset. $10K ANZ budget has this."},
+
+  {id:"FX-FOOTAGE-BANK", title:"FX Reusable Footage Bank — 16 soundbites", hook:"fx",
+   pillar:"Canton Fair", product:["FX","Forwards","Multi-currency Account"], region:["Global"], regionFit:["UK","EEA","ANZ","VN","SEA-MY","SEA-SG","Global"],
+   language:["EN-UK","EN-SEA","EN-AU"], voice:"Mixed", creator:"Multiple", talentType:"mixed",
+   format:"Footage bank", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"ready-to-reuse", platforms:[],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/2026-04-20_canton_fair_fx_reusable_footage.xlsx",
+   thumb:"fx", thumbIcon:"🎬",
+   notes:"16 FX-relevant soundbites across all 3 days. Raw footage for editor to cut into ad-format variants."},
+
+  // ============ SUPPLIER PAYMENT CASES CLUSTER ============
+  {id:"TRENDSETTER-15", title:"Tay × WF — Top 15 Clippable Moments (Made in England)", hook:"case",
+   pillar:"Partnerships", product:["Multi-currency Account","1688 World Pay"], region:["UK"], regionFit:["UK","Global"],
+   language:["EN-UK"], voice:"Tay / UK-urban", creator:"Tay (Trendsetters)", talentType:"partner",
+   format:"Display/Reel", cuts:{"60s":true,"30s":true,"15s":true,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"editor-brief", platforms:["TikTok","IG-Reels","LinkedIn","Display-Ad"],
+   perf:null, driveLink:"gdrive:Content Strategy/Trendsetter_Top15_Clips_for_WorldFirst",
+   thumb:"case", thumbIcon:"🇬🇧",
+   notes:"Hero: 'approve sample in morning, supplier works afternoon.' 15 ranked clips across 4 categories. Can hit multiple paid lines (UK hero, global social proof)."},
+
+  {id:"MATHIEU-P1", title:"Mathieu Bauer (Verso Supply) — 5-video Phase 1 slate", hook:"case",
+   pillar:"KOL", product:["Multi-currency Account","1688 World Pay"], region:["Global","EEA-FR"], regionFit:["Global","EEA-FR","UK","VN"],
+   language:["EN-UK","French"], voice:"Mathieu / multi", creator:"Mathieu Bauer (@verso_supply · 524K)", talentType:"KOL",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Content Strategy/KOL/Mathieu Bauer - Verso Supply/",
+   thumb:"case", thumbIcon:"📦",
+   notes:"5-video slate, $7,500. Verify if French-dubbing rights exist (Morocco / EEA-FR opportunity)."},
+
+  {id:"GAP-LONGTAIL-PK", title:"Pakistan · Urdu VO · supplier payment case", hook:"case",
+   pillar:"Corridor", product:["Multi-currency Account","1688 World Pay"], region:["Longtail-PK"], regionFit:["Longtail-PK"],
+   language:["Urdu"], voice:"PK-local essential", creator:"TBD (KOL deal needed)", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"Harley is B-roll in Canton Fair T2 — not creator piece. $100K Longtail budget blocked until PK creator exists."},
+
+  {id:"GAP-LONGTAIL-BD", title:"Bangladesh · Bengali VO · supplier payment case", hook:"case",
+   pillar:"Corridor", product:["Multi-currency Account","1688 World Pay"], region:["Longtail-BD"], regionFit:["Longtail-BD"],
+   language:["Bengali"], voice:"BD-local essential", creator:"TBD (KOL deal needed)", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"BD zero representation anywhere. Needs KOL deal or staff hire."},
+
+  {id:"GAP-EEA-DE-CASE", title:"Germany · supplier payment case · German VO", hook:"case",
+   pillar:"Canton Fair", product:["Multi-currency Account","Worldcard"], region:["EEA-DE"], regionFit:["EEA-DE"],
+   language:["German"], voice:"DE native", creator:"TBD (Clemens candidate?)", talentType:"WF team/KOL",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"Clemens talking head in T1 is EN. $25K EEA budget needs German B2B creative. Partial: Lex L5 Germany bank fees (EN)."},
+
+  {id:"GAP-EEA-FR-CASE", title:"France · supplier payment case · French VO", hook:"case",
+   pillar:"Canton Fair", product:["Multi-currency Account"], region:["EEA-FR","Longtail-Morocco"], regionFit:["EEA-FR","Longtail-Morocco"],
+   language:["French"], voice:"FR native", creator:"TBD (Mathieu dubbing?)", talentType:"KOL/WF team",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"FR B2B does not respond to EN acquisition. Mathieu potential if French rights/availability. Also serves Morocco."},
+
+  {id:"GAP-TR-ALL", title:"Turkey · Turkish VO · supplier payment vs competitor", hook:"case",
+   pillar:"Canton Fair", product:["FX","Multi-currency Account"], region:["Turkey"], regionFit:["Turkey"],
+   language:["Turkish"], voice:"TR native essential", creator:"TBD", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap-conditional", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"❓",
+   notes:"CONDITIONAL: Paid-April doc has TR $10K; master context says removed. Steven decision. If active, TR-local essential — EN fails."},
+
+  {id:"GAP-JKT", title:"Indonesia · Bahasa ID · app walkthrough", hook:"brand",
+   pillar:"Canton Fair", product:["App","Multi-currency Account"], region:["ID"], regionFit:["ID"],
+   language:["Bahasa-ID","EN-SEA"], voice:"ID native", creator:"TBD", talentType:"TBD",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap-conditional", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"❓",
+   notes:"CONDITIONAL: Paid-April doc has JKT $9K; master context says removed. Steven decision."},
+
+  // ============ GLOBAL BUYER VOICES ============
+  {id:"CTF-T2-OSHWA", title:"Global Buyer — Oshwalal (Canton Fair)", hook:"case",
+   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Global"], regionFit:["Longtail","Global"],
+   language:["EN-SEA"], voice:"Buyer accent", creator:"Oshwalal (buyer)", talentType:"buyer",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:42, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   thumb:"supplier", thumbIcon:"🎤",
+   notes:"T2 global buyer voice. Testimonial format."},
+
+  {id:"CTF-T2-ERIC", title:"Global Buyer — Eric (Nigeria, Canton Fair)", hook:"case",
+   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Longtail-NG"], regionFit:["Longtail-NG","Longtail"],
+   language:["EN-NG"], voice:"NG accent", creator:"Eric (NG buyer)", talentType:"buyer",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:39, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   thumb:"supplier", thumbIcon:"🇳🇬",
+   notes:"Nigeria voice. B-roll quality — not a full dedicated creator piece, but paid-usable."},
+
+  {id:"CTF-T2-HARLEY", title:"Global Buyer — Harley (Pakistan, Canton Fair)", hook:"case",
+   pillar:"Canton Fair", product:["Multi-currency Account"], region:["Longtail-PK"], regionFit:["Longtail-PK","Longtail"],
+   language:["EN-PK"], voice:"PK accent", creator:"Harley (PK buyer)", talentType:"buyer",
+   format:"Reel", cuts:{"60s":true,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:41, status:"edit", platforms:["TikTok","IG-Reels","YT-Shorts"],
+   perf:null, driveLink:"gdrive:Video Scripts/Canton Fair 2026/Documentary Cuts/2026-04-18_canton_fair_tier2_cuts.docx",
+   thumb:"supplier", thumbIcon:"🇵🇰",
+   notes:"PK buyer B-roll. NOT the dedicated Urdu creator piece needed — partial only."},
+
+  // ============ CAROUSELS ============
+  {id:"CAROUSEL-1", title:"Should You Spend $4,000 to Visit Canton Fair?", hook:"brand",
+   pillar:"Canton Fair", product:["—"], region:["Global"], regionFit:["Global"],
+   language:["EN-UK"], voice:"Brand voice", creator:"WF", talentType:"brand",
+   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":true,"static":false},
+   duration:null, status:"design-blocked", platforms:["LinkedIn","IG-Feed"],
+   perf:null, driveLink:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 1/",
+   thumb:"brand", thumbIcon:"📰",
+   notes:"Canton Fair education. DESIGNER UNASSIGNED — blocks shipping."},
+
+  {id:"CAROUSEL-5", title:"Why Your Canton Fair Deals Fall Apart After You Fly Home", hook:"supplier",
+   pillar:"Canton Fair", product:["Multi-currency Account","1688 World Pay"], region:["Global"], regionFit:["Global"],
+   language:["EN-UK"], voice:"Brand voice", creator:"WF", talentType:"brand",
+   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":true,"static":false},
+   duration:null, status:"design-blocked", platforms:["LinkedIn","IG-Feed"],
+   perf:null, driveLink:"gdrive:Social/Carousels/canton-fair-2026/Canton Fair carousel 5/",
+   thumb:"brand", thumbIcon:"📰",
+   notes:"Post-fair execution (payment context). Closest carousel to payment hook."},
+
+  {id:"GAP-CAROUSEL-BANK", title:"Bank vs WF — structured comparison carousel", hook:"case",
+   pillar:"Campaigns", product:["Multi-currency Account","FX"], region:["Global","UK","SEA-MY"], regionFit:["UK","SEA-MY","EEA","Global"],
+   language:["EN-UK"], voice:"Brand voice", creator:"TBD", talentType:"brand",
+   format:"Carousel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"⚠",
+   notes:"Root-messaging rule: compare to banks only. Not yet packaged as structured asset. Needs fee table + transfer-speed table."},
+
+  // ============ EVERGREEN / BRAND / ENTERPRISE ============
+  {id:"BLOG-ENTERPRISE", title:"From First Payment to Platform Scale on One API", hook:"brand",
+   pillar:"Blog", product:["Enterprise API","Multi-currency Account"], region:["Global"], regionFit:["UK","EEA","Global"],
+   language:["EN-UK"], voice:"Brand / Steven", creator:"WF", talentType:"brand",
+   format:"Long-form", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
+   duration:null, status:"ready", platforms:["LinkedIn","Web"],
+   perf:null, driveLink:"gdrive:Blog/From first payment to platform scale on one API - 2026-04-20.docx",
+   thumb:"brand", thumbIcon:"📄",
+   notes:"Enterprise announcement. LinkedIn article ready to post."},
+
+  {id:"WALMART-LI-10", title:"Walmart Webinar — 10 LinkedIn graphic variants", hook:"brand",
+   pillar:"Campaigns", product:["—"], region:["UK","Global"], regionFit:["UK","Global"],
+   language:["EN-UK"], voice:"Brand", creator:"WF", talentType:"brand",
+   format:"Static", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
+   duration:null, status:"review", platforms:["LinkedIn"],
+   perf:null, driveLink:"local:~/Documents/Claude/2026-04-21_walmart_webinar_linkedin/",
+   thumb:"brand", thumbIcon:"🎨",
+   notes:"10 variants (cobranded card, newspaper, boarding pass, dataviz, retro americana, magazine, swiss grid, map, y2k sticker, +1). Steven to pick."},
+
+  {id:"FINTECH-STUDY", title:"Fintech Upper-Funnel Competitor Study (Internal)", hook:"brand",
+   pillar:"Research", product:["—"], region:["—internal"], regionFit:["—internal"],
+   language:["EN-UK"], voice:"Internal", creator:"WF", talentType:"internal",
+   format:"Long-form", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":true},
+   duration:null, status:"live", platforms:["Web"],
+   perf:null, driveLink:"https://socialworldfirst.github.io/fintech-upper-funnel-study/",
+   thumb:"brand", thumbIcon:"📊",
+   notes:"Internal-facing. 8 case studies (Pleo/Nubank/Monzo/Wise/Chime/Revolut/Ramp/Brex). Reference for strategy, not a paid asset."},
+
+  // ============ GAPS - Paid cut-down workflow ============
+  {id:"GAP-CUTS-6S", title:"6s hooks from top-10 existing shorts — paid cut-downs", hook:"brand",
+   pillar:"Campaigns", product:["—all"], region:["Global"], regionFit:["all"],
+   language:["all"], voice:"mixed", creator:"Editor", talentType:"—",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"✂",
+   notes:"MULTIPLIER GAP. Paid (Meta Reels Ads / YT in-stream / TikTok Top-feed) wants 6s/15s/30s. Top-10 hero assets need ad-format variants. Who cuts: us, paid team, or agency? Unresolved."},
+
+  {id:"GAP-CUTS-15S", title:"15s versions from top-10 existing shorts", hook:"brand",
+   pillar:"Campaigns", product:["—all"], region:["Global"], regionFit:["all"],
+   language:["all"], voice:"mixed", creator:"Editor", talentType:"—",
+   format:"Reel", cuts:{"60s":false,"30s":false,"15s":false,"6s":false,"carousel":false,"static":false},
+   duration:null, status:"gap", platforms:[],
+   perf:null, driveLink:null,
+   thumb:"gap", thumbIcon:"✂",
+   notes:"Same multiplier problem. 15s ideal for IG/TT organic-looking ads."}
+];
+
+/* ============ FACET DEFINITIONS ============ */
+const FACETS = [
+  {key:"hook", label:"Product / Hook", values:[
+    {v:"worldcard", t:"World Card"},
+    {v:"1688", t:"1688 / supplier pay"},
+    {v:"fx", t:"FX / bank pain"},
+    {v:"case", t:"Customer case"},
+    {v:"brand", t:"Brand"},
+    {v:"supplier", t:"Supplier spotlight"}
+  ]},
+  {key:"region", label:"Region fit", values:[
+    {v:"UK", t:"UK"}, {v:"VN", t:"Vietnam"},
+    {v:"SEA-MY", t:"SEA·MY"}, {v:"SEA-SG", t:"SEA·SG"},
+    {v:"ANZ", t:"Australia·NZ"},
+    {v:"EEA-DE", t:"EEA·Germany"}, {v:"EEA-FR", t:"EEA·France"}, {v:"EEA-NL", t:"EEA·Netherlands"}, {v:"EEA-ES", t:"EEA·Spain"},
+    {v:"Longtail", t:"Longtail (all)"},
+    {v:"Longtail-PK", t:"·Pakistan"}, {v:"Longtail-BD", t:"·Bangladesh"},
+    {v:"Longtail-NG", t:"·Nigeria"}, {v:"Longtail-Ghana", t:"·Ghana"},
+    {v:"Longtail-Morocco", t:"·Morocco"},
+    {v:"Turkey", t:"Turkey"}, {v:"TH", t:"Thailand"},
+    {v:"ID", t:"Indonesia"}, {v:"PH", t:"Philippines"}, {v:"IN", t:"India"},
+    {v:"UAE", t:"UAE"}, {v:"MX", t:"Mexico"}, {v:"BR", t:"Brazil"},
+    {v:"Global", t:"Global"}
+  ]},
+  {key:"language", label:"Language", values:[
+    {v:"EN-UK", t:"English·UK"}, {v:"EN-AU", t:"English·AU"}, {v:"EN-SEA", t:"English·SEA"},
+    {v:"EN-US", t:"English·US"}, {v:"EN-NG", t:"English·NG"}, {v:"EN-PK", t:"English·PK"},
+    {v:"Vietnamese", t:"Vietnamese"}, {v:"Chinese", t:"中文 Mandarin"},
+    {v:"Malay", t:"Malay"}, {v:"Thai", t:"ไทย Thai"},
+    {v:"French", t:"Français"}, {v:"German", t:"Deutsch"},
+    {v:"Spanish", t:"Español"}, {v:"Turkish", t:"Türkçe"},
+    {v:"Urdu", t:"اردو Urdu"}, {v:"Bengali", t:"বাংলা Bengali"},
+    {v:"Bahasa-ID", t:"Bahasa ID"}
+  ]},
+  {key:"format", label:"Format", values:[
+    {v:"Reel", t:"Reel / short"},
+    {v:"Long-form", t:"Long-form"},
+    {v:"Carousel", t:"Carousel"},
+    {v:"Static", t:"Static / image"},
+    {v:"Display/Reel", t:"Display ad"},
+    {v:"Footage bank", t:"Footage bank"}
+  ]},
+  {key:"talentType", label:"Talent type", values:[
+    {v:"WF team", t:"WF team"},
+    {v:"KOL", t:"KOL / creator"},
+    {v:"partner", t:"Partner"},
+    {v:"buyer", t:"Buyer voice"},
+    {v:"brand", t:"Brand / internal"},
+    {v:"TBD", t:"TBD — needs casting"}
+  ]},
+  {key:"status", label:"Status", values:[
+    {v:"live", t:"Live"},
+    {v:"ready", t:"Ready to publish"},
+    {v:"ready-to-reuse", t:"Ready to reuse"},
+    {v:"edit", t:"In edit"},
+    {v:"editor-brief", t:"Editor brief"},
+    {v:"design-blocked", t:"Design blocked"},
+    {v:"review", t:"In review"},
+    {v:"gap", t:"GAP — missing"},
+    {v:"gap-conditional", t:"GAP — conditional"}
+  ]}
+];
+
+/* ============ STATE ============ */
+const state = {
+  q:"",
+  filters:{hook:new Set(), region:new Set(), language:new Set(), format:new Set(), talentType:new Set(), status:new Set()},
+  sort:"relevance",
+  gapMode:false
+};
+
+/* ============ RENDER ============ */
+function renderFilters(){
+  const aside = document.getElementById("filters");
+  aside.innerHTML = "";
+
+  // Gap mode toggle
+  const gapRow = document.createElement("div");
+  gapRow.className = "toggle-row" + (state.gapMode ? " active" : "");
+  gapRow.innerHTML = `
+    <div>
+      <div style="font-weight:600">Gap mode</div>
+      <div style="font-size:11px;color:var(--mute);margin-top:2px">Show only missing assets</div>
+    </div>
+    <div class="switch ${state.gapMode ? "on" : ""}"></div>
+  `;
+  gapRow.addEventListener("click", () => {
+    state.gapMode = !state.gapMode;
+    render();
+  });
+  aside.appendChild(gapRow);
+
+  FACETS.forEach(facet => {
+    const f = document.createElement("div");
+    f.className = "facet";
+    const active = state.filters[facet.key];
+    const counts = {};
+    ASSETS.forEach(a => {
+      const vals = Array.isArray(a[facet.key]) ? a[facet.key] : [a[facet.key]];
+      vals.forEach(v => {
+        if (!v) return;
+        counts[v] = (counts[v]||0) + 1;
+        // region special: also count regionFit
+        if (facet.key === "region") {
+          (a.regionFit||[]).forEach(rf => {
+            if (rf !== v) counts[rf] = (counts[rf]||0) + 1;
+          });
+        }
+      });
+    });
+
+    f.innerHTML = `
+      <h3>${facet.label}</h3>
+      <div class="facet-actions">
+        <button data-clear="${facet.key}">clear</button>
+      </div>
+      <div class="chips">
+        ${facet.values.map(item => {
+          const c = counts[item.v] || 0;
+          const isActive = active.has(item.v);
+          return `<div class="chip ${isActive ? "active" : ""}" data-facet="${facet.key}" data-val="${item.v}">
+            ${item.t} <span class="count">${c}</span>
+          </div>`;
+        }).join("")}
+      </div>
+    `;
+    aside.appendChild(f);
+  });
+
+  // Event delegation
+  aside.addEventListener("click", (e) => {
+    const chip = e.target.closest(".chip");
+    if (chip) {
+      const k = chip.dataset.facet;
+      const v = chip.dataset.val;
+      if (state.filters[k].has(v)) state.filters[k].delete(v);
+      else state.filters[k].add(v);
+      render();
+      return;
+    }
+    const btn = e.target.closest("[data-clear]");
+    if (btn) {
+      state.filters[btn.dataset.clear].clear();
+      render();
+    }
+  });
+}
+
+function matches(a){
+  if (state.gapMode && !a.status.startsWith("gap")) return false;
+
+  // Text query
+  if (state.q) {
+    const q = state.q.toLowerCase();
+    const hay = [a.title, a.notes, a.creator, a.id, (a.product||[]).join(" "), (a.region||[]).join(" ")].join(" ").toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+
+  // Filter facets
+  for (const fk of Object.keys(state.filters)) {
+    const set = state.filters[fk];
+    if (set.size === 0) continue;
+    const vals = Array.isArray(a[fk]) ? a[fk] : [a[fk]];
+    // region: also check regionFit for matches
+    let haystack = [...vals];
+    if (fk === "region") haystack.push(...(a.regionFit||[]));
+    const any = [...set].some(v => haystack.includes(v));
+    if (!any) return false;
+  }
+  return true;
+}
+
+function renderCards(){
+  const grid = document.getElementById("cardsGrid");
+  let filtered = ASSETS.filter(matches);
+
+  // Sort
+  const sortBy = state.sort;
+  if (sortBy === "gap-first") filtered.sort((a,b) => (a.status.startsWith("gap")?0:1) - (b.status.startsWith("gap")?0:1));
+  else if (sortBy === "region") filtered.sort((a,b) => (a.region[0]||"z").localeCompare(b.region[0]||"z"));
+  else if (sortBy === "status") filtered.sort((a,b) => (a.status||"z").localeCompare(b.status||"z"));
+  else if (sortBy === "newest") filtered.reverse();
+
+  document.getElementById("resultsCount").innerHTML =
+    `<strong style="color:var(--text)">${filtered.length}</strong> of ${ASSETS.length} assets` +
+    (state.gapMode ? ` <span style="color:var(--bad)">· GAP mode</span>` : "");
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
+      <h2>No assets match these filters</h2>
+      <p>Try clearing some chips on the left, or toggle off Gap mode.
+      If this is a real gap in production, it's worth flagging for the next content ideation.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => {
+    const isGap = a.status.startsWith("gap");
+    const cuts = a.cuts || {};
+    const cutKeys = ["60s","30s","15s","6s","carousel","static"];
+    const availCuts = cutKeys.filter(k => cuts[k]);
+    const missingCuts = cutKeys.filter(k => !cuts[k] && (k==="60s"||k==="30s"||k==="15s"||k==="6s")); // only show missing for video cuts
+
+    return `<div class="card ${isGap ? "gap" : ""}">
+      <div class="thumb hero-${a.thumb||'brand'}">
+        <div class="thumb-icon">${a.thumbIcon||"📎"}</div>
+        <div class="thumb-badges">
+          ${a.status === "live" ? `<div class="thumb-badge live">LIVE</div>` : ""}
+          ${isGap ? `<div class="thumb-badge gap">GAP</div>` : ""}
+          ${a.status === "ready" ? `<div class="thumb-badge" style="background:rgba(52,211,153,0.85);color:#0A2E1F">READY</div>` : ""}
+          ${a.status === "design-blocked" ? `<div class="thumb-badge" style="background:rgba(251,191,36,0.85);color:#2E1F0A">BLOCKED</div>` : ""}
+        </div>
+        ${a.duration ? `<div class="thumb-dur">${a.duration}s</div>` : ""}
+      </div>
+      <div class="card-body">
+        <div class="card-title">${a.title}</div>
+        <div class="card-meta">
+          <span class="pillar">${a.pillar}</span>
+          <span class="dot">·</span>
+          <span>${a.creator}</span>
+          <span class="dot">·</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px">${a.id}</span>
+        </div>
+        <div class="card-tags">
+          ${a.product.slice(0,3).map(p => `<span class="tag product">${p}</span>`).join("")}
+          ${a.region.slice(0,3).map(r => `<span class="tag region">${r}</span>`).join("")}
+          ${a.language.slice(0,2).map(l => `<span class="tag lang">${l}</span>`).join("")}
+          ${a.voice ? `<span class="tag voice">${a.voice}</span>` : ""}
+        </div>
+        ${!isGap ? `<div class="cuts-row">
+          ${["60s","30s","15s","6s"].map(k => {
+            const has = cuts[k];
+            return `<span class="cut ${has ? "has" : "missing"}">${has ? "✓" : "✗"} ${k}</span>`;
+          }).join("")}
+        </div>` : `<div style="font-size:11px;color:var(--bad);padding:6px 8px;background:rgba(248,113,113,0.08);border-radius:6px;border:1px solid rgba(248,113,113,0.2)">
+          ${a.notes}
+        </div>`}
+        ${a.notes && !isGap ? `<div style="font-size:11.5px;color:var(--text-dim);line-height:1.45">${a.notes}</div>` : ""}
+        <div class="actions">
+          ${a.driveLink ? `<a class="btn primary" href="${a.driveLink.startsWith('http') ? a.driveLink : '#'}" title="${a.driveLink}">Open source →</a>` : ""}
+          ${isGap ? `<button class="btn warn">Spin up production</button>` : `<button class="btn ghost" title="mailto link in Phase 2">Request cut</button>`}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderStats(){
+  const total = ASSETS.length;
+  const gaps = ASSETS.filter(a => a.status.startsWith("gap")).length;
+  const live = ASSETS.filter(a => a.status === "live" || a.status === "ready").length;
+  const edit = ASSETS.filter(a => a.status === "edit").length;
+  const regions = new Set(ASSETS.flatMap(a => a.regionFit||[])).size;
+  const creators = new Set(ASSETS.map(a => a.creator)).size;
+
+  document.getElementById("statsBar").innerHTML = `
+    <div class="stat"><span class="n">${total}</span><span class="l">Assets tracked</span></div>
+    <div class="stat gap"><span class="n">${gaps}</span><span class="l">Gaps flagged</span></div>
+    <div class="stat live"><span class="n">${live}</span><span class="l">Ready / live</span></div>
+    <div class="stat"><span class="n">${edit}</span><span class="l">In edit</span></div>
+    <div class="stat"><span class="n">${regions}</span><span class="l">Regions mapped</span></div>
+    <div class="stat"><span class="n">${creators}</span><span class="l">Creators</span></div>
+  `;
+}
+
+function render(){
+  renderFilters();
+  renderCards();
+}
+
+function init(){
+  renderStats();
+  render();
+
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    state.q = e.target.value;
+    renderCards();
+  });
+  document.getElementById("sortSelect").addEventListener("change", (e) => {
+    state.sort = e.target.value;
+    renderCards();
+  });
+  document.getElementById("clearAll").addEventListener("click", () => {
+    state.q = "";
+    state.gapMode = false;
+    Object.values(state.filters).forEach(s => s.clear());
+    document.getElementById("searchInput").value = "";
+    render();
+  });
+  // keyboard shortcut /
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+      e.preventDefault();
+      document.getElementById("searchInput").focus();
+    }
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
